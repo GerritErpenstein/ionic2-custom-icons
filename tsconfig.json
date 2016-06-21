@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "rootDir": "directive/src",
+    "outDir": "directive/lib"
+  },
+  "files": [
+    "directive/src/index.ts",
+    "typings/browser.d.ts"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "out":"directive/typedoc",
+  "name":"ionic2-custom-icons",
+  "module":"commonjs",
+  "target":"ES5"
+}

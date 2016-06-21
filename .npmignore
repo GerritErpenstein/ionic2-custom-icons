@@ -1,0 +1,9 @@
+npm-debug.log
+node_modules
+.idea
+.DS_Store
+.git
+typings
+example/
+.gitignore
+.npmignore
