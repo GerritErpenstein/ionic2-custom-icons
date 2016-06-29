@@ -35,6 +35,7 @@ var copyScripts = require('ionic-gulp-scripts-copy');
 var customIcons = require('ionic2-custom-icons/gulp-plugin');
 
 var isRelease = argv.indexOf('--release') > -1;
+var browserifySrc = ['./app/app.ts', './typings/index.d.ts'];
 
 gulp.task('watch', ['clean'], function (done) {
     runSequence(
@@ -46,7 +47,10 @@ gulp.task('watch', ['clean'], function (done) {
             gulpWatch('app/**/*.html', function () {
                 gulp.start('html');
             });
-            buildBrowserify({watch: true}).on('end', done);
+            buildBrowserify({
+                src: browserifySrc,
+                watch: true
+            }).on('end', done);
         }
     );
 });
@@ -56,6 +60,7 @@ gulp.task('build', ['clean'], function (done) {
         'customicons', ['sass', 'html', 'fonts', 'scripts'],
         function () {
             buildBrowserify({
+                src: browserifySrc,
                 minify: isRelease,
                 browserifyOptions: {
                     debug: !isRelease
