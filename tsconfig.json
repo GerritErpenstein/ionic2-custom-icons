@@ -13,6 +13,6 @@
   },
   "files": [
     "directive/src/index.ts",
-    "typings/browser.d.ts"
+    "typings/index.d.ts"
   ]
 }

@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
-import {CUSTOM_ICON_DIRECTIVES} from 'ionic2-custom-icons/directive';
 
 @Component({
-    templateUrl: 'build/pages/icons/icons.html',
+    templateUrl: 'build/pages/icons/icons.page.html',
     //directives: [CUSTOM_ICON_DIRECTIVES]
 })
 export class IconsPage {

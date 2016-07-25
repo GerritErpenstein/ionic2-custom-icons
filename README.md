@@ -25,7 +25,9 @@ Table of contents
       - [Option 1: Globally](#option-1-globally)
       - [Option 2: Per component](#option-2-per-component)
     + [Using the directive in templates](#using-the-directive-in-templates)
+      - [Tabs](#tabs)
 - [Example app](#example-app)
+- [Building](#building)
 - [ToDo](#todo)
 - [Contribution](#contribution)
 - [License](#license)
@@ -141,15 +143,15 @@ Note: The path `www/scss` results from the default value of the plugin's option 
 An alternative way to process the *Sass* files during the build lifecycle is to use the `@import`statements in the *Ionic* app's `app.core.scss`for every single of the before mentioned files.
 
 #### 5. Import icon sets in app.core.scss
-Add each icon set to *Ionics* `app.core.scss` file in the default path `app/theme/app.core.scss`. This is done by using *Sass*'s `@import` statement and the icon set's name used in plugin configuration:
+Add a reference to each icon set into *Ionic's* `app.core.scss` file in the default path `app/theme/app.core.scss`. This is done by using *Sass*'s `@import` statement and the icon set's name used in the plugin configuration:
 ```
 @import "MyIcons1";
 @import "MyIcons2";
 ```
-Note: In the above example the icon set names from step 2 are used. You have to use the names from your individual configuration.
+Note: In the above example the icon set names from step 2 are used (*MyIcons1* and *MyIcons2*). You have to use the names from your individual configuration. For example, if your custom icon set is named '*MySuperDuperIcons*', use `@import "MySuperDuperIcons"`.
 
 #### 6. Extend clean task (optional)
-Using the above default configuration a directory `www/scss` is created during the build phase. If you want it to be deleted when the `clean` task runs, edit it as follows:
+Using the above default configuration, a directory `www/scss` is created during the build phase. If you want it to be deleted when the `clean` task runs, edit it as follows:
 ```javascript
 gulp.task('clean', function () {
     return del(['www/build', 'www/scss']);
@@ -183,7 +185,7 @@ Using the *Angular 2* directive in your *Ionic 2* app to render custom icons is 
 ##### Option 1: Globally
 To add the *custom-icon* directive globally, import the directive and edit your bootstrap configuration in your `app.ts` file:
 ```typescript
-import {CUSTOM_ICON_DIRECTIVES} from 'ionic2-custom-icons/directive';
+import {CUSTOM_ICON_DIRECTIVES} from 'ionic2-custom-icons';
 
 // ...
 
@@ -199,7 +201,7 @@ The *custom-icon* directive is available to all components now. This means you d
 If you don't want the directive to be available globally, you can import and reference it for individual components. For this, import the directive and add it to the `@Component` decorator's `directives` array:
 ```typescript
 // ...
-import {CUSTOM_ICON_DIRECTIVES} from 'ionic2-custom-icons/directive';
+import {CUSTOM_ICON_DIRECTIVES} from 'ionic2-custom-icons';
 
 @Component({
     templateUrl: 'myTemplate.html',
@@ -233,9 +235,48 @@ Special use cases, like adding an icon to an *Ionic* Button, are also supported:
 
 See the file [icons.html](app/pages/icons/icons.html) in the example app for an overview.
 
+##### Tabs
+
+Support for adding custom icons to *Ionic*'s [tab component](http://ionicframework.com/docs/v2/api/components/tabs/Tab/) was introduced in Version 0.2.0.
+
+Instead of using the `custom-icon` directly, use the two properties `customIconSet` and `customIconName` inside the `ion-tab` component tag.
+See the following example:
+```html
+<ion-tabs class="tabs-icon-text">
+    ...
+    <ion-tab customIconSet="mySet" customIconName="myIcon" tabTitle="My title" [root]="myPageCmp"></ion-tab>
+    ...
+</ion-tabs>
+```
+
+Refer to the above table for the data-bound input property description. `customIconSet` is analogous to `set` and `customIconName` to `name`. 
+
 Example app
 ------------------
 See the [example](example) directory for a working example *Ionic* app that showcases the *gulp* plugin configuration and various custom icon directive use cases.
+
+Building
+------------------
+There are a few more steps required if you want to build the library. Please note, that this is not required if you just want to use the library in your *Ionic 2* app.
+
+Make sure that all npm dependencies are installed:
+```
+npm install
+```
+Install *typings* globally:
+```
+npm install typings --global
+```
+Running this as root user might be necessary, depending on your npm environment.
+After that, install the TypeScript definitions:
+```
+typings install
+```
+Build the library by running the following command:
+```
+npm run build
+```
+You can find the result in the `lib` directory.
 
 ToDo
 ------------------
@@ -244,7 +285,7 @@ ToDo
     * Improve streaming capabilities
     * Add more options?
 * **directive**
-    * Support for *Ionic 2* tabs component
+    * ~~Support for *Ionic 2* tabs component~~ (added in 0.2.0)
 * Support for generic *Angular 2* environments
 
 Let me know if you have any feature suggestions!

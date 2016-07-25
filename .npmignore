@@ -6,4 +6,3 @@ node_modules
 typings
 example/
 .gitignore
-.npmignore
