@@ -57,9 +57,9 @@ Installation
 *ionic2-custom-icons* is available via the *Node Package Manager* (*NPM*).
 You can install the package with the following command:
 ```
-npm install ionic2-custom-icons --save-dev
+npm install ionic2-custom-icons --save
 ```
-The *--save-dev* parameter is optional and saves a reference into the *devDependencies* array in your project's package descriptor file *package.json*.
+The *--save* parameter is optional and saves a reference into the *dependencies* array in your project's package descriptor file *package.json*.
 
 Usage
 ------------------
