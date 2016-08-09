@@ -53,31 +53,36 @@ export class TabCustomIcon implements AfterContentInit, OnChanges, OnDestroy {
      */
     private _addIcon() {
         let element = this._elementRef.nativeElement,
-            tabsElement = this._tabs.getElementRef().nativeElement;
-        // find out index of tab item
-        let index:number = -1,
+            tabsElement = this._tabs.getElementRef().nativeElement,
+            index:number = -1,
             childNodes = tabsElement.childNodes,
             childNode:Node,
-            // target tab node
+            tabBarNode:Node,
             tabNode:Node;
+
+        // Find tab bar node and index of tab item
         for (let i = 0, l = childNodes.length; i < l; i++) {
             childNode = childNodes[i];
-            if (childNode.nodeType === 1 && childNode.nodeName === 'ION-TAB') {
-                index++;
-                if (element === childNode) {
-                    // found it!
-                    break;
+            if (childNode.nodeType === 1) {
+                if (childNode.nodeName === 'ION-TABBAR') {
+                    // tab bar found!
+                    tabBarNode = childNode;
+                }
+                else if (childNode.nodeName === 'ION-TAB') {
+                    index++;
+                    if (element === childNode) {
+                        // target tab found!
+                        break;
+                    }
                 }
             }
         }
         if (index === -1) {
-            console.warn('Error finding tab index.');
-            return;
+            throw 'TabCustomIcon: Error finding tab index.';
         }
 
-        // find corresponding tab element in tab bar
-        let tabBarNode:Node = childNodes[0];
-        if (tabBarNode.nodeType === 1 && tabBarNode.nodeName === 'ION-TABBAR') {
+        // Find tab node in tab bar
+        if (tabBarNode) {
             childNodes = tabBarNode.childNodes;
             let tabBarIndex:number = -1;
             for (let i = 0, l = childNodes.length; i < l; i++) {
@@ -92,8 +97,7 @@ export class TabCustomIcon implements AfterContentInit, OnChanges, OnDestroy {
                 }
             }
         } else {
-            console.warn('No ion-tabbar node at index 0.');
-            return;
+            throw 'TabCustomIcon: Error finding tab bar node "ion-tabbar"';
         }
 
         // add icon to tab
@@ -109,8 +113,7 @@ export class TabCustomIcon implements AfterContentInit, OnChanges, OnDestroy {
             this._iconElement = document.createElement('custom-icon');
             tabNode.insertBefore(this._iconElement, tabNode.firstChild);
         } else {
-            console.warn('Target tab not found.');
-            return;
+            throw 'TabCustomIcon: Target tab not found.';
         }
     }
 
