@@ -3,6 +3,7 @@
 - Switched from *gulp* to *npm* build system
 - Fixed tabs directive (Ionic changed DOM structure)
 - Updated README
+- Moved example app to independent *GitHub* repository: [ionic2-custom-icons-example](https://github.com/GerritErpenstein/ionic2-custom-icons-example)
 
 #### Breaking changes
 

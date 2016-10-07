@@ -124,6 +124,7 @@ node_modules/@ionic/app-scripts/config
 Alternatively you can get the files from the project's *GitHub* repository: [ionic-app-scripts/config](https://github.com/driftyco/ionic-app-scripts/tree/master/config). But be warned that these config files may be incompatible with your local installation as the code is being actively developed on. 
 
 Copy the files `copy.config.js` and `sass.config.js` to a directory called `config` in your app's root directory. See the following screenshot for a better understanding:
+
 ![screenshot-dir-structure](https://raw.githubusercontent.com/GerritErpenstein/ionic2-custom-icons/master/resources/screenshot-dir-structure.png)
 
 ###### 2.1.1 Edit `config/copy.config.js`
@@ -262,7 +263,7 @@ Refer to the above table for the data-bound input property description. `customI
 Example app
 ------------------
 
-A fully working example app is provided in an independent *GitHup* repository: [ionic2-custom-icons-example](https://github.com/GerritErpenstein/ionic2-custom-icons-example)
+A fully working example app is provided in an independent *GitHub* repository: [ionic2-custom-icons-example](https://github.com/GerritErpenstein/ionic2-custom-icons-example)
 
 Changelog
 ---------
