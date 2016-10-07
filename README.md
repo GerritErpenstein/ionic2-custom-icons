@@ -1,7 +1,7 @@
 ionic2-custom-icons
 ============
 
-A *gulp* plugin for creating custom icon fonts and an *Angular 2* directive to render the icons in your *Ionic 2* app.
+A *npm-script* for creating custom icon fonts and an *Angular 2* directive to render the icons in your *Ionic 2* app.
 
 Table of contents
 ------------------
@@ -10,25 +10,24 @@ Table of contents
 
 - [Description](#description)
 - [Installation](#installation)
+- [Configuration](#configuration)
+  * [Setting up the npm-script](#setting-up-the-npm-script)
+    + [1. Extending package.json](#1-extending-packagejson)
+      - [1.1 Add npm-scripts](#11-add-npm-scripts)
+      - [1.2 Set paths to config files](#12-set-paths-to-config-files)
+    + [2. Config files](#2-config-files)
+      - [2.1 Config for `copy` and `sass` task](#21-config-for-copy-and-sass-task)
+        * [2.1.1 Edit `config/copy.config.js`](#211-edit-configcopyconfigjs)
+        * [2.1.2 Edit `config/sass.config.js`](#212-edit-configsassconfigjs)
+      - [2.2 Config for `ionic2-custom-icons`](#22-config-for-ionic2-custom-icons)
+    + [Advanced configuration](#advanced-configuration)
 - [Usage](#usage)
-  * [Setting up a gulp task](#setting-up-a-gulp-task)
-    + [1. Add the plugin](#1-add-the-plugin)
-    + [2. Create a new task](#2-create-a-new-task)
-    + [3. Add new task to "build" and "watch" tasks](#3-add-new-task-to-build-and-watch-tasks)
-    + [4. Add directory to "sass" task](#4-add-directory-to-sass-task)
-    + [5. Import icon sets in app.core.scss](#5-import-icon-sets-in-appcorescss)
-    + [6. Extend clean task (optional)](#6-extend-clean-task-optional)
-    + [Complete example](#complete-example)
-  * [Gulp plugin API options](#gulp-plugin-api-options)
-  * [Using the directive](#using-the-directive)
     + [Importing](#importing)
-      - [Option 1: Globally](#option-1-globally)
-      - [Option 2: Per component](#option-2-per-component)
     + [Using the directive in templates](#using-the-directive-in-templates)
       - [Tabs](#tabs)
 - [Example app](#example-app)
-- [Building](#building)
-- [ToDo](#todo)
+- [Changelog](#changelog)
+- [Building the library](#building-the-library)
 - [Contribution](#contribution)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
@@ -39,7 +38,7 @@ Table of contents
 Description
 ------------------
 
-The *gulp* plugin allows creating icon fonts from a given set of SVG vector images during the app's build phase. Internally the plugin uses the great libraries [gulp-iconfont](https://github.com/nfroidure/gulp-iconfont) (by *Nicolas Froidure*) to generate the SVG/*TTF/EOT/WOFF/WOFF2* fonts and [gulp-iconfont-scss](https://github.com/nfroidure/gulp-iconfont-scss) (by *Thomas Jaggi* and *Nicolas Froidure*) to create *Sass* stylesheets from those generated fonts.
+The *npm-script* allows creating icon fonts from a given set of SVG vector images during the app's build phase. Internally the *npm-script* uses [gulp](http://gulpjs.com/) and the awesome libraries [gulp-iconfont](https://github.com/nfroidure/gulp-iconfont) (by *Nicolas Froidure*) to generate the SVG/*TTF/EOT/WOFF/WOFF2* fonts and [gulp-iconfont-scss](https://github.com/nfroidure/gulp-iconfont-scss) (by *Thomas Jaggi* and *Nicolas Froidure*) to create *Sass* stylesheets from those generated fonts.
 
 The *Angular 2* directive **CustomIcon** provides a convenient way to embed the previously generated icon fonts in an *Ionic 2* app by simply adding a component to the HTML template. See the following example:
 ```html
@@ -47,7 +46,7 @@ The *Angular 2* directive **CustomIcon** provides a convenient way to embed the 
 ```
 A set of *Sass/CSS* rules comes along with directive, which allows adding icons to default  *Ionic 2* components like buttons and list items.
 
-Theoretically the *gulp* plugin and directive should work within a generic *Angular 2* environment with minor modifications But right now this is completely untested and unsupported.
+Theoretically the *npm-script* and directive should work within a generic *Angular 2* environment with minor modifications but right now this is completely untested and unsupported.
 
 ~**Notice:** Please be aware that there are serious reasons to not use icon fonts at all. See [here](https://sarasoueidan.com/blog/icon-fonts-to-svg/#recommended-reading) for further discussions. But as the Ionic 2 team prefers icon fonts over other solutions, this is also the path I have chosen.~
 
@@ -61,156 +60,165 @@ npm install ionic2-custom-icons --save
 ```
 The *--save* parameter is optional and saves a reference into the *dependencies* array in your project's package descriptor file *package.json*.
 
+Configuration
+------------------
+
+### Setting up the npm-script
+
+Ionic uses `npm scripts` and [ionic-app-scripts](https://github.com/driftyco/ionic-app-scripts) for the build system. This new build system was introduced in version RC0.
+
+
+#### 1. Extending package.json 
+
+In order to run this library's *npm-script* for building the icon fonts, you have to extend your `package.json` file. This file contains all dependencies of your app and is the main configuration for the build process. 
+
+##### 1.1 Add npm-scripts
+
+Add a `pre-build` and a `pre-watch` script to the the `scripts` property:
+```
+...
+"scripts": {
+  "prebuild": "ionic2-custom-icons",
+  "prewatch": "ionic2-custom-icons",
+  ...
+}
+...
+```
+
+These scripts automatically get called BEFORE *Ionic's* build process starts. `ionic2-custom-icons` is the node script that runs the fonts creation. Thus the generated fonts and the SCSS data are ready to be processed and bundled by *Ionic*'s build tools in the subsequent phase.
+
+See the [package.json](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/package.json) of the example project for reference.
+
+##### 1.2 Set paths to config files
+
+As already mentioned, the generated fonts and the SCSS data need to be processed and bundled in the main build phase of *Ionic's* build tools. For this to work you have to modify the paths processed by the `copy` and `sass` task which is achieved by extending *Ionic's* default configuration.
+
+The first step to do so, is setting paths to custom config files for *Ionic*'s `copy` and `sass` task. The *ionic2-custom-icons* library is also configured by a config file.
+Add the following `config` property to your `package.json`:
+```
+...
+"config": {
+  "ionic_copy": "./config/copy.config.js",
+  "ionic_sass": "./config/sass.config.js",
+  "custom_icons": "./config/custom-icons.config.js"
+}
+...
+```
+
+Note: Of course you can set any path you would like to use. Just make sure to adjust it in the next step. 
+
+Again, see the [package.json](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/package.json) of the example project for reference.
+
+#### 2. Config files
+
+In this step you will set up the config files that are referenced in the previous step.
+ 
+##### 2.1 Config for `copy` and `sass` task
+
+[ionic-app-scripts](https://github.com/driftyco/ionic-app-scripts) provide default config files for the `copy` and `sass` task which you can copy and extend.
+The safest way to get these config files is to look into your local `node_modules` directory.
+```
+node_modules/@ionic/app-scripts/config
+```
+
+Alternatively you can get the files from the project's *GitHub* repository: [ionic-app-scripts/config](https://github.com/driftyco/ionic-app-scripts/tree/master/config). But be warned that these config files may be incompatible with your local installation as the code is being actively developed on. 
+
+Copy the files `copy.config.js` and `sass.config.js` to a directory called `config` in your app's root directory. See the following screenshot for a better understanding:
+![screenshot-dir-structure](https://raw.githubusercontent.com/GerritErpenstein/ionic2-custom-icons/master/resources/screenshot-dir-structure.png)
+
+###### 2.1.1 Edit `config/copy.config.js`
+
+Add(!) the following object to the `include` array:
+```
+{
+  src: '.tmp-custom-icons/fonts/',
+  dest: 'www/assets/fonts/'
+}
+```
+
+See the [copy.config.js](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/config/copy.config.js) of the example project for reference.
+
+###### 2.1.2 Edit `config/sass.config.js`
+
+Remove all properties except `includePaths` and `variableSassFiles`. (Don't worry about the now "missing" properties. *Ionic* merges them from the default config during the build process.)
+
+Now add the following string to the `includePaths` array:
+```
+'.tmp-custom-icons/scss/'
+```
+
+Next, add the following string to the `variableSassFiles` array:
+```
+'.tmp-custom-icons/scss/variables.scss'
+```
+
+See the [sass.config.js](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/config/sass.config.js) of the example project for reference.
+
+##### 2.2 Config for `ionic2-custom-icons`
+
+This library also needs minimal configuration. You have to add each icon set you want to use to the file `config/custom-icons.config.js`.
+See the following example:
+```
+// customIcons config
+module.exports = {
+  iconSets: [
+    {
+      src: 'icons/my-icons-1/*.svg',
+      name: 'MyIcons1',
+      id: 'mi1
+    },
+    {
+      src: 'icons/my-icons-2/*.svg',
+      name: 'MyIcons2',
+      id: 'mi2
+    }
+  ]
+};
+```
+Each icon set needs to be added to the `iconSets` array. An icon set config is an object that consists of the following three properties: `src`, `name` and `id`:
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `src` | `string`<br>or<br>`Array` |  Source image files matching the provided glob or array of globs. Glob refers to [ node-glob syntax](https://github.com/isaacs/node-glob) or a direct file path.  See [gulp.src(globs[, options])](https://gulp.readme.io/docs/gulpsrcglobs-options)  for more info. |
+| `name` | `string` | A unique name for the icon set. May not contain whitespace. This value is used for naming the generated *Sass* files and the `font-family` property in the *Sass* files. |
+| `id` | `string` | A unique, preferably short, identifier string for the icon set. May not contain whitespace. Use this value for the directive's `set` attribute. |
+
+Note: Make sure to use the `module.exports` property as presented in the example. 
+
+See the [custom-icons.config.js](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/config/custom-icons.config.js) of the example project for reference.
+
+#### Advanced configuration
+
+TODO
+
 Usage
 ------------------
 
-### Setting up a gulp task
-
-#### 1. Add the plugin
-Add the *gulp* plugin to your `gulpfile.js`:
-```javascript
-var customIcons = require('ionic2-custom-icons/gulp-plugin');
-```
-#### 2. Create a new task
-Create a task and configure the plugin:
-```javascript
-gulp.task('customicons', function () {
-    return customIcons([
-        // config
-        {
-            src: 'icons/my-icons1/*.svg',
-            name: 'MyIcons1',
-            id: 'mi1'
-        },
-        {
-            src: 'icons/my-icons2/*.svg',
-            name: 'MyIcons2',
-            id: 'mi2'
-        }
-    ])
-});
-```
-In this example the task is named `customicons` but you can name it whatever you like. Just make sure you use the particular name for referencing it afterwards.
-The plugin's function takes an array as parameter which consists of one or more objects. Each object configures the creation of an icon set. An icon set is a set of an arbitrary number of icons using SVG image files as source.
-In the example above there are two icon sets configured: `MyIcons1` and `MyIcons2`.
-A configuration object **requires** at least the following three properties: `src`, `name` and `id`. See [Plugin API options](#plugin-api-options) below for an explanation and listing of required and optional configuration properties.
-
-#### 3. Add new task to "build" and "watch" tasks
-Next, add the created task `customicons` to the existing `build` and `watch` task:
-```javascript
-gulp.task('watch', ['clean'], function (done) {
-    runSequence(
-        // edit the following line
-        'customicons', ['sass', 'html', 'fonts', 'scripts'],
-        function () {
-            // omitted for brevity
-        }
-    );
-});
-
-gulp.task('build', ['clean'], function (done) {
-    runSequence(
-        // edit the following line
-        'customicons', ['sass', 'html', 'fonts', 'scripts'],
-        function () {
-            // omitted for brevity
-        }
-    );
-});
-```
-Note: The new task is not inside the previous `runSequence` array as this would cause the task and the `sass` task to both run async. This is not desired as the `customicons` task creates a *Sass* file that is processed in the subsequent `sass` task.
-
-#### 4. Add directory to "sass" task
-The plugin generates a *Sass* file for every icon set. These files need to be processed and converted to *CSS* by the *Sass* interpreter during the build phase. Additionally the plugin provides a mandatory *Sass* file for the `custom-icon` directive.
-One option to accomplish this is to overwrite the default paths for the `sass` task (*ionic-gulp-sass-build* plugin):
-```javascript
-gulp.task('sass', function () {
-    return buildSass({
-        sassOptions: {
-            includePaths: [
-                // default paths (see ionic-gulp-sass-build)
-                'node_modules/ionic-angular',
-                'node_modules/ionicons/dist/scss',
-                // added for custom icons
-                'node_modules/ionic2-custom-icons/directive/lib/scss/',
-                'www/scss'
-            ]
-        }
-    });
-});
-```
-Note: The path `www/scss` results from the default value of the plugin's option `scssTargetRelPath` which can be reconfigured.
-An alternative way to process the *Sass* files during the build lifecycle is to use the `@import`statements in the *Ionic* app's `app.core.scss`for every single of the before mentioned files.
-
-#### 5. Import icon sets in app.core.scss
-Add a reference to each icon set into *Ionic's* `app.core.scss` file in the default path `app/theme/app.core.scss`. This is done by using *Sass*'s `@import` statement and the icon set's name used in the plugin configuration:
-```
-@import "MyIcons1";
-@import "MyIcons2";
-```
-Note: In the above example the icon set names from step 2 are used (*MyIcons1* and *MyIcons2*). You have to use the names from your individual configuration. For example, if your custom icon set is named '*MySuperDuperIcons*', use `@import "MySuperDuperIcons"`.
-
-#### 6. Extend clean task (optional)
-Using the above default configuration, a directory `www/scss` is created during the build phase. If you want it to be deleted when the `clean` task runs, edit it as follows:
-```javascript
-gulp.task('clean', function () {
-    return del(['www/build', 'www/scss']);
-});
-```
-
-#### Complete example
-See the relevant files in the example *Ionic 2* project in the [example](example): directory
-
-* [gulpfile.js](example/gulpfile.js) 
-* [app/theme/app.core.scss](example/app/theme/app.core.scss) 
-
-### Gulp plugin API options
-
-| Option | Type | Required | Description |
-| --- | --- | --- | --- |
-| `src` | `string`<br>or<br>`Array` |  **yes** | Source image files matching the provided glob or array of globs. Glob refers to [ node-glob syntax](https://github.com/isaacs/node-glob) or a direct file path.  See [gulp.src(globs[, options])](https://gulp.readme.io/docs/gulpsrcglobs-options)  for more info. |
-| `name` | `string` |  **yes** | A unique name for the icon set. May not contain whitespace. This value needs to be referenced in your app's `app.core.scss` via the *Sass* `@import` statement. |
-| `id` | `string` | ** yes** | A unique, preferably short, identifier string for the icon set. May not contain whitespace. Use this value for the directive's `set` attribute. |
-| `templatePath` | `string` | no | Path to a template file that is used to generate the icon set's *Sass* file. For more info see the plugin's default template (`gulp-plugin/template.scss`) or the *gulp-iconfont-css* [example templates](https://github.com/backflip/gulp-iconfont-css/tree/master/templates).<br>**Default value:** Path to the plugin's default template. |
-| `fontTargetPath` | `string` | no | Path to icon set fonts output directory.<br>**Default value**: `www/build/fonts` (Ionic default directory)|
-| `fontRelPath` | `string` | no | Relative path to the icon set fonts from the *CSS* base path.<br>**Default value**: `../fonts/` (Ionics default *CSS* path is www/build/css) |
-| `scssTargetRelPath` | `string` | no | Path to the generated icon set's *Sass* file, relative to the path used in `fontTargetPath`. <br>**Default value**: `'../../scss/' + name + '.scss'` (Points to `www/scss/<name>.scss`)  |
-
-### Using the directive
-
-Using the *Angular 2* directive in your *Ionic 2* app to render custom icons is pretty easy. As with every *Angular 2* directive, you have to provide it's reference to use it in a template. There are two options to do this: Define it globally (preferred) or define it for every component. The first option is preferred as the *custom-icon* directive is probably used in several templates.
+Using the *Angular 2* directive in your *Ionic 2* app to render custom icons is pretty easy.
 
 #### Importing
 
-##### Option 1: Globally
-To add the *custom-icon* directive globally, import the directive and edit your bootstrap configuration in your `app.ts` file:
-```typescript
-import {CUSTOM_ICON_DIRECTIVES} from 'ionic2-custom-icons';
+As with every *Angular 2* directive, you have to provide it's reference to use it in a template. Since *Angular 2* RC5 this is done by using the `@NgModule` decorator function.
 
-// ...
+This library provides a module called `CustomIconsModule`. To use it in your app, locate your project's root module. *Ionic* names it `app.module.ts` by default. Add `CustomIconsModule` to the `imports` property of your app's root module configuration.
+See the following example:
+```javascript
+...
+import { CustomIconsModule } from 'ionic2-custom-icons';
+...
 
-ionicBootstrap(MyApp, [
-    {
-        provide: PLATFORM_DIRECTIVES, useValue: [CUSTOM_ICON_DIRECTIVES], multi: true
-    }
-]);
-```
-The *custom-icon* directive is available to all components now. This means you don't need to import and reference it for every `@Component` decorator. Just use `custom-icon` in your templates.
-
-##### Option 2: Per component
-If you don't want the directive to be available globally, you can import and reference it for individual components. For this, import the directive and add it to the `@Component` decorator's `directives` array:
-```typescript
-// ...
-import {CUSTOM_ICON_DIRECTIVES} from 'ionic2-custom-icons';
-
-@Component({
-    templateUrl: 'myTemplate.html',
-    directives: [CUSTOM_ICON_DIRECTIVES]
+@NgModule({
+  ...
+  imports: [
+    IonicModule.forRoot(MyApp),
+    CustomIconsModule // Add this!
+  ],
+  ...
 })
-export class MyComponent {
-    // ...
-}
+export class AppModule {}
 ```
+
+See the [app.module.ts](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/src/app/app.module.ts) of the example project for reference.
 
 #### Using the directive in templates
 Use the directive as follows to render a custom icon in your app:
@@ -253,9 +261,15 @@ Refer to the above table for the data-bound input property description. `customI
 
 Example app
 ------------------
-See the [example](example) directory for a working example *Ionic* app that showcases the *gulp* plugin configuration and various custom icon directive use cases.
 
-Building
+A fully working example app is provided in an independent *GitHup* repository: [ionic2-custom-icons-example](https://github.com/GerritErpenstein/ionic2-custom-icons-example)
+
+Changelog
+---------
+
+A changelog with upgrade information is available [here](https://github.com/GerritErpenstein/ionic2-custom-icons/blob/master/CHANGELOG.md).
+
+Building the library
 ------------------
 There are a few more steps required if you want to build the library. Please note, that this is not required if you just want to use the library in your *Ionic 2* app.
 
@@ -263,32 +277,11 @@ Make sure that all npm dependencies are installed:
 ```
 npm install
 ```
-Install *typings* globally:
-```
-npm install typings --global
-```
-Running this as root user might be necessary, depending on your npm environment.
-After that, install the TypeScript definitions:
-```
-typings install
-```
+
 Build the library by running the following command:
 ```
 npm run build
 ```
-You can find the result in the `lib` directory.
-
-ToDo
-------------------
-
-* **gulp plugin**
-    * Improve streaming capabilities
-    * Add more options?
-* **directive**
-    * ~~Support for *Ionic 2* tabs component~~ (added in 0.2.0)
-* Support for generic *Angular 2* environments
-
-Let me know if you have any feature suggestions!
 
 Contribution
 ------------------

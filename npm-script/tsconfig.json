@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "module": "commonjs",
+    "outDir": "./dist",
+    "target": "es5",
+    "noImplicitAny": true,
+    "types": [
+      "node"
+    ]
+  },
+  "files": [
+    "src/index.ts"
+  ]
+}
