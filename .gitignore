@@ -2,6 +2,9 @@ npm-debug.log
 node_modules
 .idea
 .DS_Store
-directive/lib
-directive/typedoc
-typings/
+
+directive/dist
+npm-script/dist
+
+# Output of 'npm pack'
+*.tgz
