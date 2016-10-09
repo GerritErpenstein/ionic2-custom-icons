@@ -143,8 +143,9 @@ See the [copy.config.js](https://github.com/GerritErpenstein/ionic2-custom-icons
 
 Remove all properties except `includePaths` and `variableSassFiles`. (Don't worry about the now "missing" properties. *Ionic* merges them from the default config during the build process.)
 
-Now add the following string to the `includePaths` array:
+Now add the following strings to the `includePaths` array:
 ```
+'node_modules/ionic2-custom-icons/directive/scss/',
 '.tmp-custom-icons/scss/'
 ```
 
