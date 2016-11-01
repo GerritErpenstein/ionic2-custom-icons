@@ -1,3 +1,6 @@
+# [0.3.1](https://github.com/GerritErpenstein/ionic2-custom-icons/compare/0.3.0...0.3.1) (2016-11-01)
+- Updated dependencies
+
 # [0.3.0](https://github.com/GerritErpenstein/ionic2-custom-icons/compare/0.2.1...0.3.0) (2016-10-07)
 - Upgraded to Ionic 2.0.0-rc.0
 - Switched from *gulp* to *npm* build system
