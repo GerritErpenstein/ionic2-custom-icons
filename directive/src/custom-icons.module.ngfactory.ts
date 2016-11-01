@@ -13,13 +13,23 @@ import * as import5 from '@angular/core/src/i18n/tokens';
 class CustomIconsModuleInjector extends import0.NgModuleInjector<import1.CustomIconsModule> {
   _CommonModule_0:import2.CommonModule;
   _CustomIconsModule_1:import1.CustomIconsModule;
-  __NgLocalization_2:import3.NgLocaleLocalization;
+  __LOCALE_ID_2:any;
+  __NgLocalization_3:import3.NgLocaleLocalization;
+  __TRANSLATIONS_FORMAT_4:any;
   constructor(parent:import4.Injector) {
     super(parent,[],[]);
   }
-  get _NgLocalization_2():import3.NgLocaleLocalization {
-    if ((this.__NgLocalization_2 == (null as any))) { (this.__NgLocalization_2 = new import3.NgLocaleLocalization(this.parent.get(import5.LOCALE_ID))); }
-    return this.__NgLocalization_2;
+  get _LOCALE_ID_2():any {
+    if ((this.__LOCALE_ID_2 == (null as any))) { (this.__LOCALE_ID_2 = (null as any)); }
+    return this.__LOCALE_ID_2;
+  }
+  get _NgLocalization_3():import3.NgLocaleLocalization {
+    if ((this.__NgLocalization_3 == (null as any))) { (this.__NgLocalization_3 = new import3.NgLocaleLocalization(this._LOCALE_ID_2)); }
+    return this.__NgLocalization_3;
+  }
+  get _TRANSLATIONS_FORMAT_4():any {
+    if ((this.__TRANSLATIONS_FORMAT_4 == (null as any))) { (this.__TRANSLATIONS_FORMAT_4 = (null as any)); }
+    return this.__TRANSLATIONS_FORMAT_4;
   }
   createInternal():import1.CustomIconsModule {
     this._CommonModule_0 = new import2.CommonModule();
@@ -29,7 +39,9 @@ class CustomIconsModuleInjector extends import0.NgModuleInjector<import1.CustomI
   getInternal(token:any,notFoundResult:any):any {
     if ((token === import2.CommonModule)) { return this._CommonModule_0; }
     if ((token === import1.CustomIconsModule)) { return this._CustomIconsModule_1; }
-    if ((token === import3.NgLocalization)) { return this._NgLocalization_2; }
+    if ((token === import5.LOCALE_ID)) { return this._LOCALE_ID_2; }
+    if ((token === import3.NgLocalization)) { return this._NgLocalization_3; }
+    if ((token === import5.TRANSLATIONS_FORMAT)) { return this._TRANSLATIONS_FORMAT_4; }
     return notFoundResult;
   }
   destroyInternal():void {

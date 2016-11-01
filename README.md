@@ -116,16 +116,18 @@ In this step you will set up the config files that are referenced in the previou
 ##### 2.1 Config for `copy` and `sass` task
 
 [ionic-app-scripts](https://github.com/driftyco/ionic-app-scripts) provide default config files for the `copy` and `sass` task which you can copy and extend.
-The safest way to get these config files is to look into your local `node_modules` directory.
+The **safest way** to get these config files is to look into your local `node_modules` directory.
 ```
 node_modules/@ionic/app-scripts/config
 ```
 
-Alternatively you can get the files from the project's *GitHub* repository: [ionic-app-scripts/config](https://github.com/driftyco/ionic-app-scripts/tree/master/config). But be warned that these config files may be incompatible with your local installation as the code is being actively developed on. 
+(**Alternatively** you can get the files from the project's *GitHub* repository: [ionic-app-scripts/config](https://github.com/driftyco/ionic-app-scripts/tree/master/config). But **be warned**(!) that these config files may be incompatible with your local installation as the code is being actively developed on.) 
 
 Copy the files `copy.config.js` and `sass.config.js` to a directory called `config` in your app's root directory. See the following screenshot for a better understanding:
 
 ![screenshot-dir-structure](https://raw.githubusercontent.com/GerritErpenstein/ionic2-custom-icons/master/resources/screenshot-dir-structure.png)
+
+Please note that you have to check and may adapt the two config files everytime you update the `@ionic/app-scripts` library. Hopefully the *Ionic* team provides a better solution in the future.
 
 ###### 2.1.1 Edit `config/copy.config.js`
 

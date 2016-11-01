@@ -1,6 +1,6 @@
 {
   "name": "ionic2-custom-icons",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A npm-script for creating custom icon fonts and an Angular 2 directive to render the icons in your Ionic 2 app.",
   "author": {
     "email": "gerrit.erpenstein.dev@gmail.com",
@@ -27,24 +27,34 @@
     "markdown-toc": "markdown-toc -i README.md"
   },
   "dependencies": {
-    "fs-extra": "0.30.0",
+    "fs-extra": "1.0.0",
     "gulp": "3.9.1",
-    "gulp-iconfont": "8.0.0",
+    "gulp-iconfont": "8.0.1",
     "gulp-iconfont-css": "2.1.0",
     "gulp-util": "3.0.7",
-    "lodash": "4.14.2",
+    "lodash": "4.16.6",
     "merge-stream": "1.0.0"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "0.6.3",
+    "@angular/common": "2.0.0",
+    "@angular/compiler": "2.0.0",
+    "@angular/compiler-cli": "0.6.2",
+    "@angular/core": "2.0.0",
+    "@angular/forms": "2.0.0",
+    "@angular/http": "2.0.0",
+    "@angular/platform-browser": "2.0.0",
+    "@angular/platform-browser-dynamic": "2.0.0",
+    "@angular/platform-server": "2.0.0",
     "@types/es6-promise": "0.0.32",
     "@types/es6-shim": "^0.31.32",
-    "@types/fs-extra": "0.0.32",
+    "@types/fs-extra": "0.0.33",
     "@types/lodash": "^4.14.36",
-    "@types/node": "6.0.38",
-    "ionic-angular": "2.0.0-rc.0",
+    "@types/node": "6.0.45",
+    "ionic-angular": "2.0.0-rc.1",
     "markdown-toc": "0.13.0",
-    "typescript": "2.0.3"
+    "rxjs": "5.0.0-beta.12",
+    "typescript": "2.0.6",
+    "zone.js": "0.6.21"
   },
   "keywords": [
     "ionic",
