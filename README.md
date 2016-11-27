@@ -74,18 +74,20 @@ In order to run this library's *npm-script* for building the icon fonts, you hav
 
 ##### 1.1 Add npm-scripts
 
-Add a `pre-build` and a `pre-watch` script to the the `scripts` property:
+Add the `ionic2-custom-icons` script and bind it to `build:before` and `serve:before`.
+
 ```
 ...
 "scripts": {
-  "prebuild": "ionic2-custom-icons",
-  "prewatch": "ionic2-custom-icons",
+  "ionic2-custom-icons": "ionic2-custom-icons",
+  "build:before": "ionic2-custom-icons",
+  "serve:before": "ionic2-custom-icons",
   ...
 }
 ...
 ```
 
-These scripts automatically get called BEFORE *Ionic's* build process starts. `ionic2-custom-icons` is the node script that runs the fonts creation. Thus the generated fonts and the SCSS data are ready to be processed and bundled by *Ionic*'s build tools in the subsequent phase.
+The script automatically gets called BEFORE *Ionic's* build (`ionic build`) and serve (`ionic serve`) process starts. `ionic2-custom-icons` is the node script that runs the fonts creation. Thus the generated fonts and the SCSS data are ready to be processed and bundled by *Ionic*'s build tools in the subsequent phase.
 
 See the [package.json](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/package.json) of the example project for reference.
 
