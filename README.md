@@ -3,6 +3,12 @@ ionic2-custom-icons
 
 A *npm-script* for creating custom icon fonts and an *Angular 2* directive to render the icons in your *Ionic 2* app.
 
+```
+The library has been tested with Ionic 2.0.0-rc.4 and @ionic/app-scripts 0.0.47. 
+```
+
+Please note that Ionic is under heavy development. This library will be updated promptly if there are any modifications/updates necessary. 
+
 Table of contents
 ------------------
 
@@ -133,11 +139,11 @@ Please note that you have to check and may adapt the two config files everytime 
 
 ###### 2.1.1 Edit `config/copy.config.js`
 
-Add(!) the following object to the `include` array:
+Add(!) the following property to the `module.exports` object:
 ```
-{
-  src: '.tmp-custom-icons/fonts/',
-  dest: 'www/assets/fonts/'
+copyCustomIcons: {
+   src: ['{{ROOT}}/.tmp-custom-icons/fonts/**/*'],
+   dest: '{{WWW}}/assets/fonts'
 }
 ```
 
