@@ -177,12 +177,12 @@ module.exports = {
     {
       src: 'icons/my-icons-1/*.svg',
       name: 'MyIcons1',
-      id: 'mi1
+      id: 'mi1'
     },
     {
       src: 'icons/my-icons-2/*.svg',
       name: 'MyIcons2',
-      id: 'mi2
+      id: 'mi2'
     }
   ]
 };
