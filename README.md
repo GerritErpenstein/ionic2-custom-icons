@@ -253,7 +253,7 @@ Special use cases, like adding an icon to an *Ionic* Button, are also supported:
 </button>
 ```
 
-See the file [icons.html](app/pages/icons/icons.html) in the example app for an overview.
+See the file [icons.page.html](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/src/pages/icons/icons.page.html) in the example app for an overview.
 
 ##### Tabs
 
