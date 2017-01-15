@@ -8,6 +8,7 @@ const gulp = require('gulp'),
    mergeStream = require('merge-stream');
 
 const PLUGIN_NAME = 'ionic2-custom-icons';
+const CSS_PREFIX = 'custom-icons-';
 
 export function gulpCustomIcons(config: Config) {
    // One gulp stream for each icon set
@@ -19,7 +20,7 @@ export function gulpCustomIcons(config: Config) {
       // https://www.npmjs.com/package/gulp-iconfont-css
          .pipe(iconfontCSS({
             fontName: iconSet.name,
-            cssClass: iconSet.id,
+            cssClass: CSS_PREFIX + iconSet.id,
             path: config.templatePath,
             targetPath: _.template(config.scssRelPath)(iconSet),
             fontPath: config.fontRelPath

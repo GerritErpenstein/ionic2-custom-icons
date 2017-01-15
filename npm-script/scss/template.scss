@@ -34,6 +34,15 @@
 @return $char;
 }
 
+// https://stackoverflow.com/revisions/40389473/3
+@function ends-with($string, $find) {
+  @if (str-slice($string, (str-length($string) - str-length($find) + 1)) == $find) {
+    @return true;
+  } @else {
+    @return false;
+  }
+}
+
 @mixin <%= cssClass%>($filename, $insert: before, $extend: true) {
 &:#{$insert} {
   @if $extend {
@@ -41,7 +50,12 @@
   } @else {
     @include <%= cssClass%>-styles;
   }
-  content: <%= cssClass%>-char($filename);
+
+  @if(ends-with($filename, '-ios') or ends-with($filename, '-md') or ends-with($filename, '-wp')) {
+    content: <%= cssClass%>-char($filename) !important;
+  } @else {
+    content: <%= cssClass%>-char($filename);
+  }
 }
 }
 
