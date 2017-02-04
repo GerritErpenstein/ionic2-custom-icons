@@ -1,7 +1,7 @@
 {
   "name": "ionic2-custom-icons",
-  "version": "0.4.0-rc.1",
-  "description": "A npm-script for creating custom icon fonts and an Angular 2 directive to render the icons in your Ionic 2 app.",
+  "version": "0.4.1-beta.0",
+  "description": "A npm-script for creating custom icon fonts and Angular 2 directives to render the icons in your Ionic 2 app.",
   "author": {
     "email": "gerrit.erpenstein.dev@gmail.com",
     "name": "Gerrit Erpenstein"
