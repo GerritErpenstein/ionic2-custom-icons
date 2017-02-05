@@ -1,1 +1,1 @@
-export * from './directive/dist';
+export * from './ionic/dist';

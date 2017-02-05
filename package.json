@@ -19,9 +19,9 @@
   },
   "main": "directive/dist/index.js",
   "scripts": {
-    "clean": "rm -rf directive/dist npm-script/dist",
-    "prebuild": "npm run clean && mkdir directive/dist && mkdir npm-script/dist",
-    "directive:build": "ngc -p directive/tsconfig.json",
+    "clean": "rm -rf ionic/dist npm-script/dist",
+    "prebuild": "npm run clean && mkdir ionic/dist && mkdir npm-script/dist",
+    "directive:build": "ngc -p ionic/tsconfig.json",
     "npm-script:build": "tsc -p npm-script",
     "build": "npm run directive:build && npm run npm-script:build",
     "markdown-toc": "markdown-toc -i README.md"
@@ -48,13 +48,13 @@
     "@types/es6-promise": "0.0.32",
     "@types/es6-shim": "^0.31.32",
     "@types/fs-extra": "0.0.33",
-    "@types/lodash": "^4.14.36",
+    "@types/lodash": "4.14.36",
     "@types/node": "6.0.45",
-    "ionic-angular": "2.0.0-rc.5",
+    "ionic-angular": "2.0.0",
     "markdown-toc": "0.13.0",
     "rxjs": "5.0.0-beta.12",
     "typescript": "2.0.9",
-    "zone.js": "0.6.21"
+    "zone.js": "0.6.26"
   },
   "keywords": [
     "ionic",
