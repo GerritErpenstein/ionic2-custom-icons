@@ -1,5 +1,9 @@
 import {Directive, Input, Host, ElementRef, AfterContentInit, OnDestroy, OnChanges, SimpleChange} from '@angular/core';
-import {Tabs, Config} from 'ionic-angular';
+import {Tab, Tabs, Config} from 'ionic-angular';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 import {CustomIconBase} from './custom-icon-base';
 import {ClassUpdater} from './util/ClassUpdater';
 import {HTMLElementClassUpdater} from './util/HTMLElementClassUpdater';
@@ -35,11 +39,24 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
    * Icon element in DOM
    */
   private _iconElement: HTMLElement;
+  /**
+   * Promise resolve function that is called when the icon has been added to the DOM.
+   */
+  private _iconAddedResolve: () => void;
 
   constructor(private _elementRef: ElementRef,
+              private _tab: Tab,
               @Host() private _tabs: Tabs,
               config: Config) {
     super(config);
+    // Observable from Promise that resolves when the icon is added to the DOM
+    const iconAdded$ = Observable.fromPromise(new Promise(resolve => this._iconAddedResolve = resolve));
+    // Subscribe to tab change events and call _onTabSelected on change.
+    this._tabs.ionChange.asObservable()
+      .flatMap((selectedTab: Tab) => iconAdded$.map(() => selectedTab))
+      .subscribe((selectedTab: Tab) => {
+        this._onTabSelected(selectedTab);
+      });
   }
 
   /**
@@ -48,7 +65,6 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
   public ngAfterContentInit() {
     setTimeout(() => {
       this._addIcon();
-      this._update();
     });
   }
 
@@ -121,22 +137,41 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
     } else {
       throw 'TabCustomIcon: Target tab not found.';
     }
+
+    // add classes to custom icon element
+    if (this.iconName && this.iconSet) {
+      super.updateIcon(this.iconName);
+      super.updateSet(this.iconSet);
+    }
+    // Resolve promise
+    this._iconAddedResolve();
   }
 
   /**
    * Called on input parameter value changes.
    */
   public ngOnChanges(changes: {[key: string]: SimpleChange}) {
-    if (this._iconElement)
-      this._update();
+    if (this._iconElement) {
+      if (changes.hasOwnProperty('iconName')) {
+        super.updateIcon(this.iconName);
+      }
+      if (changes.hasOwnProperty('iconSet')) {
+        super.updateSet(this.iconSet);
+      }
+    }
   }
 
   /**
-   * Update/set the icon's css class.
+   * Called on selected tab change.
+   * @param selectedTab The newly selected Tab
    * @private
    */
-  private _update() {
-    super.update(this.iconName, this.iconSet);
+  private _onTabSelected(selectedTab: Tab) {
+    if (selectedTab === this._tab) {
+      super.updateActive(true);
+    } else {
+      super.updateActive(false);
+    }
   }
 
   /**

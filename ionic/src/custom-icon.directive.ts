@@ -2,6 +2,7 @@ import {Directive, ElementRef, Renderer, Input, OnChanges, SimpleChange, OnDestr
 import {Config} from 'ionic-angular';
 import {CustomIconBase} from './custom-icon-base'
 import {ElementRefClassUpdater} from './util/ElementRefClassUpdater';
+import {isTrueValue} from './util/utils';
 
 /**
  * Directive to display custom icons from generated icon font.
@@ -33,6 +34,20 @@ export class CustomIcon extends CustomIconBase implements OnChanges, OnDestroy {
   @Input('set')
   public iconSet: string = '';
 
+  /**
+   * Icon in active state?
+   */
+  private _isActive: boolean = true;
+
+  @Input('isActive')
+  get isActive(): boolean {
+    return this._isActive;
+  }
+
+  set isActive(isActive: boolean) {
+    this._isActive = isTrueValue(isActive);
+  }
+
   constructor(private _elementRef: ElementRef,
               private _renderer: Renderer,
               config: Config) {
@@ -44,7 +59,15 @@ export class CustomIcon extends CustomIconBase implements OnChanges, OnDestroy {
    * Called on input parameter value changes.
    */
   public ngOnChanges(changes: {[key: string]: SimpleChange}) {
-    super.update(this.iconName, this.iconSet);
+    if (changes.hasOwnProperty('iconName')) {
+      super.updateIcon(this.iconName);
+    }
+    if (changes.hasOwnProperty('iconSet')) {
+      super.updateSet(this.iconSet);
+    }
+    if (changes.hasOwnProperty('isActive')) {
+      super.updateActive(this.isActive);
+    }
   }
 
   /**

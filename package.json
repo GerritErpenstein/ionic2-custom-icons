@@ -1,6 +1,6 @@
 {
   "name": "ionic2-custom-icons",
-  "version": "0.4.1-beta.0",
+  "version": "0.4.1-beta.1",
   "description": "A npm-script for creating custom icon fonts and Angular 2 directives to render the icons in your Ionic 2 app.",
   "author": {
     "email": "gerrit.erpenstein.dev@gmail.com",
@@ -30,7 +30,8 @@
     "fs-extra": "1.0.0",
     "gulp": "3.9.1",
     "gulp-iconfont": "8.0.1",
-    "gulp-iconfont-css": "2.1.0",
+    "gulp-rename": "1.2.2",
+    "gulp-template": "4.0.0",
     "gulp-util": "3.0.7",
     "lodash": "4.16.6",
     "merge-stream": "1.0.0"

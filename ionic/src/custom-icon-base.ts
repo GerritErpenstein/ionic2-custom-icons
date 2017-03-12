@@ -2,6 +2,13 @@ import {ElementRef, Renderer} from '@angular/core';
 import {Config} from 'ionic-angular';
 import {ClassUpdater} from './util/ClassUpdater';
 
+interface CustomIconClasses {
+  set: string;
+  icon: string;
+  mode: string;
+  active: string;
+}
+
 /**
  * Base class for custom-icon directives. Mainly responsible for setting/updating the target element's CSS class.
  *
@@ -10,82 +17,120 @@ import {ClassUpdater} from './util/ClassUpdater';
 export abstract class CustomIconBase {
 
   /**
-   * CSS class prefix
+   * CSS set prefix
    */
-  private static readonly CSS_PREFIX = 'custom-icons-';
+  private static readonly SET_PREFIX = 'set-';
 
   /**
-   * Current active css class
+   * CSS icon prefix
    */
-  private _class: string;
-  /**
-   * Current active css class with mode suffix
-   */
-  private _classMode: string;
-  /**
-   * Platform mode: md, ios or wp
-   */
-  private _mode: string;
+  private static readonly ICON_PREFIX = 'icon-';
 
   /**
-   * CSS class updater instance
+   * Stores currently set classes
    */
-  private _classUpdater: ClassUpdater;
+  private _classes: CustomIconClasses = {
+    set: null,
+    icon: null,
+    mode: null,
+    active: null
+  };
+
+  /**
+   * Promise that resolves to the CSS class updater instance
+   */
+  private _classUpdaterPromise: Promise<ClassUpdater>;
+  private _classUpdaterResolve: (classUpdater: ClassUpdater) => void;
 
   constructor(config: Config) {
-    this.mode = config.get('mode');
+    this._classUpdaterPromise = new Promise(resolve => {
+      this._classUpdaterResolve = resolve;
+    });
+    this.updateMode(config.get('mode'));
   }
 
   /**
-   * Set platform mode.
-   * @param mode md, ios or wp
-   * @private
-   */
-  protected set mode(mode: string) {
-    if (['md', 'ios', 'wp'].indexOf(mode) === -1) {
-      throw 'CustomIcon: Mode ' + this._mode + ' not supported';
-    }
-    this._mode = mode;
-  }
-
-  /**
-   * TODO
+   * Set ClassUpdater instance.
+   * Note: Setting the ClassUpdater is mandatory!
    * @param classUpdater
    */
   protected set classUpdater(classUpdater: ClassUpdater) {
-    this._classUpdater = classUpdater;
+    this._classUpdaterResolve(classUpdater);
   }
 
   /**
-   * Update and set element's css class values.
+   * Update icon name.
+   * @param icon
+   */
+  protected updateIcon(icon: string) {
+    this._updateClass('icon', CustomIconBase.ICON_PREFIX + icon);
+  }
+
+  /**
+   * Update set name.
+   * @param set
+   */
+  protected updateSet(set: string) {
+    this._updateClass('set', CustomIconBase.SET_PREFIX + set);
+  }
+
+  /**
+   * Update platform mode.
+   * @param mode md, ios or wp
+   */
+  protected updateMode(mode: string) {
+    if (['md', 'ios', 'wp'].indexOf(mode) === -1) {
+      throw 'CustomIcon: Mode ' + mode + ' not supported';
+    }
+    this._updateClass('mode', mode);
+  }
+
+  /**
+   * Update icon to active/inactive.
+   * @param active
+   */
+  protected updateActive(active: boolean) {
+    let classVal;
+    if (active) {
+      classVal = null;
+    } else {
+      classVal = 'inactive';
+    }
+    this._updateClass('active', classVal);
+  }
+
+  /**
+   * Update class (key) to given value
+   * @param key
+   * @param value
    * @private
    */
-  protected update(iconName: string, iconSet: string) {
-    // remove old css class values
-    this.removeElementClasses();
-
-    if (!iconName || !iconSet) {
-      // invalid input parameters
-      this._class = this._classMode = undefined;
-      return;
-    }
-
-    // new css class values
-    this._class = CustomIconBase.CSS_PREFIX + iconSet + '-' + iconName;
-    this._classMode = this._class + '-' + this._mode;
-    this._classUpdater.addClass(this._class);
-    this._classUpdater.addClass(this._classMode);
+  private _updateClass(key: string, value: string) {
+    this._classUpdaterPromise.then((classUpdater: ClassUpdater) => {
+      if (this._classes[key]) {
+        classUpdater.removeClass(this._classes[key]);
+      }
+      if (!value) {
+        this._classes[key] = null;
+        return;
+      }
+      this._classes[key] = value;
+      classUpdater.addClass(value);
+    });
   }
 
   /**
-   * Remove all CSS class values from this element set by the directive.
-   * @private
+   * Remove all CSS class values from this element set by this class.
    */
   protected removeElementClasses() {
-    if (this._class)
-      this._classUpdater.removeClass(this._class);
-    if (this._classMode)
-      this._classUpdater.removeClass(this._classMode);
+    this._classUpdaterPromise.then((classUpdater: ClassUpdater) => {
+      for (var key in this._classes) {
+        if (this._classes[key]) {
+          classUpdater.removeClass(this._classes[key]);
+          this._classes[key] = null;
+        }
+      }
+    });
   }
 
 }

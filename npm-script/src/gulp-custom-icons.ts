@@ -1,42 +1,83 @@
 import * as _ from 'lodash';
+import {join} from 'path';
 import {Config} from './config';
 
 const gulp = require('gulp'),
-   gutil = require('gulp-util'),
-   iconfont = require('gulp-iconfont'),
-   iconfontCSS = require('gulp-iconfont-css'),
-   mergeStream = require('merge-stream');
+  gutil = require('gulp-util'),
+  iconfont = require('gulp-iconfont'),
+  template = require('gulp-template'),
+  rename = require('gulp-rename'),
+  mergeStream = require('merge-stream');
 
-const PLUGIN_NAME = 'ionic2-custom-icons';
-const CSS_PREFIX = 'custom-icons-';
+const PLUGIN_NAME = 'ionic2-custom-icons',
+  FONT_NAME_PREFIX = 'custom-icons-',
+  FILENAME_PREFIX = FONT_NAME_PREFIX;
 
 export function gulpCustomIcons(config: Config) {
-   // One gulp stream for each icon set
-   const streams: Array<any> = [];
-   for (let iconSet of config.iconSets) {
-      gutil.log(PLUGIN_NAME + ': Creating custom icon set \'' + iconSet.name + '\'');
-      // run gulp tasks: iconfont, iconfontCSS
-      let stream = gulp.src([iconSet.src])
-      // https://www.npmjs.com/package/gulp-iconfont-css
-         .pipe(iconfontCSS({
-            fontName: iconSet.name,
-            cssClass: CSS_PREFIX + iconSet.id,
-            path: config.templatePath,
-            targetPath: _.template(config.scssRelPath)(iconSet),
+  // One gulp stream for each icon set
+  const streams: Array<any> = [];
+  for (let iconSet of config.iconSets) {
+    gutil.log(PLUGIN_NAME + ': Creating custom icon set \'' + iconSet.id + '\'');
+    const fontName = FONT_NAME_PREFIX + iconSet.id;
+    // run gulp tasks: iconfont, iconfontCSS
+    let stream = gulp.src([iconSet.src])
+      .pipe(iconfont({
+        fontName: fontName,
+        formats: ['ttf', 'eot', 'woff', 'woff2', 'svg'],
+        normalize: true,
+        centerHorizontally: true,
+        fontHeight: 1000
+      }))
+      .on('glyphs', function (glyphs: any[], options: any) {
+        let setClass = iconSet.id;
+        processGlyphs(glyphs, setClass);
+        gulp.src(config.templatePath)
+          .pipe(template({
+            glyphs: glyphs,
+            fontName: fontName,
+            setClass: setClass,
             fontPath: config.fontRelPath
-         }))
-         // https://github.com/nfroidure/gulp-iconfont
-         .pipe(iconfont({
-            fontName: iconSet.name,
-            prependUnicode: true,
-            formats: ['ttf', 'eot', 'woff', 'woff2', 'svg'],
-            normalize: true,
-            centerHorizontally: true,
-            fontHeight: 1000
-         }))
-         .pipe(gulp.dest(config.fontTargetPath));
-      streams.push(stream);
-   }
-   // return merged streams of all icon sets
-   return mergeStream(streams);
+          }))
+          .pipe(rename(FILENAME_PREFIX + iconSet.id + '.scss'))
+          .pipe(gulp.dest(config.scssTargetPath))
+      })
+      .pipe(gulp.dest(config.fontTargetPath));
+    streams.push(stream);
+  }
+  // return merged streams of all icon sets
+  return mergeStream(streams);
+}
+
+/**
+ * Process glyphs and set class name based on its filename
+ * @param glyphs
+ * @param setClass
+ */
+function processGlyphs(glyphs: any[], setClass: string) {
+  for (let glyph of glyphs) {
+    let namePartsTmp = glyph.name.split('-'),
+      curNamePart = namePartsTmp.splice(-1)[0],
+      iconClassTmp = '';
+    // inactive class
+    if (curNamePart === 'inactive') {
+      iconClassTmp = '.inactive';
+      curNamePart = namePartsTmp.splice(-1)[0];
+    }
+    // mode class
+    if (curNamePart === 'ios' || curNamePart === 'md' || curNamePart === 'wp') {
+      iconClassTmp = '.' + curNamePart + iconClassTmp;
+      curNamePart = namePartsTmp.splice(-1)[0]
+    }
+
+    // Prepend base name
+    iconClassTmp = curNamePart + iconClassTmp;
+    if (namePartsTmp.length) {
+      iconClassTmp = namePartsTmp.join('-') + '-' + iconClassTmp;
+    }
+
+    // combined classes of glyph
+    glyph.class = 'custom-icon.' + 'set-' + setClass + '.' + 'icon-' + iconClassTmp;
+    // unicode string of glyph
+    glyph.char = glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase();
+  }
 }

@@ -8,58 +8,36 @@
   url('<%= fontPath %><%= fontName %>.svg#<%= fontName %>') format('svg');
 }
 
-@mixin <%= cssClass%>-styles {
+%<%= setClass%> {
   font-family: "<%= fontName %>";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  // speak: none; // only necessary if not using the private unicode range (firstGlyph option)
   text-decoration: none;
   text-transform: none;
 }
 
-%<%= cssClass%> {
-  @include <%= cssClass%>-styles;
-}
-
-@function <%= cssClass%>-char($filename) {
+@function <%= setClass%>-char($filename) {
   $char: "";
+  <% _.each(glyphs, function(glyph) { %>
+    @if $filename == <%= glyph.name %> {
+      $char: "\<%= glyph.char %>";
+    }
+  <% }); %>
+  @return $char;
+}
+
+@mixin <%= setClass%>($filename) {
+  &:before {
+    @extend %<%= setClass%>;
+    content: <%= setClass%>-char($filename);
+  }
+}
+
 <% _.each(glyphs, function(glyph) { %>
-  @if $filename == <%= glyph.fileName %> {
-  $char: "\<%= glyph.codePoint %>";
-}<% }); %>
-
-@return $char;
-}
-
-// https://stackoverflow.com/revisions/40389473/3
-@function ends-with($string, $find) {
-  @if (str-slice($string, (str-length($string) - str-length($find) + 1)) == $find) {
-    @return true;
-  } @else {
-    @return false;
+  <%= glyph.class %> {
+    @include <%= setClass%>(<%= glyph.name %>);
   }
-}
-
-@mixin <%= cssClass%>($filename, $insert: before, $extend: true) {
-&:#{$insert} {
-  @if $extend {
-    @extend %<%= cssClass%>;
-  } @else {
-    @include <%= cssClass%>-styles;
-  }
-
-  @if(ends-with($filename, '-ios') or ends-with($filename, '-md') or ends-with($filename, '-wp')) {
-    content: <%= cssClass%>-char($filename) !important;
-  } @else {
-    content: <%= cssClass%>-char($filename);
-  }
-}
-}
-
-<% _.each(glyphs, function(glyph) { %>.<%= cssClass%>-<%= glyph.fileName %> {
-  @include <%= cssClass%>(<%= glyph.fileName %>);
-}
 <% }); %>
