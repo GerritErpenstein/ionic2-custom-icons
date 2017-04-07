@@ -9,6 +9,12 @@ The library has been tested with Ionic 2.0.0 and @ionic/app-scripts 1.0.0.
 
 Please note that Ionic is under heavy development. This library will be updated promptly if there are any modifications/updates necessary. 
 
+Beta release
+------------
+
+For the beta release see [README-BETA](README-BETA.md).
+The current beta release contains a lot of changes including **inactive (outline)** and **platform dependant** icons. Furthermore it has been particularly tested with ***Ionic 3.x***. 
+
 Table of contents
 ------------------
 
