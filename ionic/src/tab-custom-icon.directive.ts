@@ -143,6 +143,7 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
       super.updateIcon(this.iconName);
       super.updateSet(this.iconSet);
     }
+    this._iconElement.classList.add('tab-button-icon');
     // Resolve promise
     this._iconAddedResolve();
   }
@@ -180,6 +181,7 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
   public ngOnDestroy() {
     // remove icon element from DOM
     if (this._iconElement) {
+      this._iconElement.classList.remove('tab-button-icon');
       super.removeElementClasses();
       let parentNode: Node = this._iconElement.parentNode;
       if (parentNode) {
