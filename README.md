@@ -44,7 +44,7 @@ The *Angular 2* directive **CustomIcon** provides a convenient way to embed the 
 ```
 A set of *Sass/CSS* rules comes along with directive, which allows adding icons to default  *Ionic 2* components like buttons and list items.
 
-~**Notice:** Please be aware that there are serious reasons to not use icon fonts at all. See [here](https://sarasoueidan.com/blog/icon-fonts-to-svg/#recommended-reading) for further discussions. But as the Ionic 2 team prefers icon fonts over other solutions, this is also the path I have chosen.~
+<sub>**Notice:** Please be aware that there are serious reasons to not use icon fonts at all. See [here](https://sarasoueidan.com/blog/icon-fonts-to-svg/#recommended-reading) for further discussions. But as the Ionic 2 team prefers icon fonts over other solutions, this is also the path I have chosen.</sub>
 
 Installation
 ------------------
