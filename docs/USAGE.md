@@ -37,7 +37,7 @@ Example icon names:
 `meerkant-inactive.svg`
 `warthog-md-inactive.svg`
 
-The example app contains a few more examples: [icons](https://github.com/GerritErpenstein/ionic2-custom-icons-example/tree/feature/platform-specific/icons)
+The example app contains a few more examples: [icons](https://github.com/GerritErpenstein/ionic2-custom-icons-example/tree/master/icons)
 
 #### Importing the module
 

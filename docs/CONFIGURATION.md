@@ -41,7 +41,7 @@ Add the `ionic2-custom-icons` script and bind it to `build:before` and `serve:be
 
 The script automatically gets called BEFORE *Ionic's* build (`ionic build`) and serve (`ionic serve`) process starts. `ionic2-custom-icons` is the node script that runs the fonts creation. Thus the generated fonts and the SCSS data are ready to be processed and bundled by *Ionic*'s build tools in the subsequent phase.
 
-See the [package.json](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/feature/platform-specific/package.json) of the example project for reference.
+See the [package.json](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/package.json) of the example project for reference.
 
 ##### 1.2 Set paths to config files
 
@@ -61,7 +61,7 @@ Add the following `config` property to your `package.json`:
 
 Note: Of course you can set any path you would like to use. Just make sure to adjust it in the next step. 
 
-Again, see the [package.json](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/feature/platform-specific/package.json) of the example project for reference.
+Again, see the [package.json](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/package.json) of the example project for reference.
 
 #### 2. Config files
 
@@ -93,7 +93,7 @@ copyCustomIcons: {
 }
 ```
 
-See the [copy.config.js](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/feature/platform-specific/config/copy.config.js) of the example project for reference.
+See the [copy.config.js](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/config/copy.config.js) of the example project for reference.
 
 ###### 2.1.2 Edit `config/sass.config.js`
 
@@ -110,7 +110,7 @@ Next, add the following string to the `variableSassFiles` array:
 '.tmp-custom-icons/scss/variables.scss'
 ```
 
-See the [sass.config.js](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/feature/platform-specific/config/sass.config.js) of the example project for reference.
+See the [sass.config.js](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/config/sass.config.js) of the example project for reference.
 
 ##### 2.2 Config for `ionic2-custom-icons`
 
@@ -140,7 +140,7 @@ Each icon set needs to be added to the `iconSets` array. An icon set config is a
 
 Note: Make sure to use the `module.exports` property as presented in the example. 
 
-See the [custom-icons.config.js](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/feature/platform-specific/config/custom-icons.config.js) of the example project for reference.
+See the [custom-icons.config.js](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/config/custom-icons.config.js) of the example project for reference.
 
 #### Advanced configuration
 
