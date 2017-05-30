@@ -4,9 +4,8 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
-import {CustomIconBase} from './custom-icon-base';
-import {ClassUpdater} from './util/ClassUpdater';
-import {HTMLElementClassUpdater} from './util/HTMLElementClassUpdater';
+import {CustomIconBase} from '../custom-icon-base';
+import {HTMLElementClassUpdater} from '../util/HTMLElementClassUpdater';
 
 /**
  * Directive for adding a custom icon to an ion-tab element. Use the input properties 'customIconSet' and
@@ -88,8 +87,7 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
         if ((<Element>childNode).classList.contains('tabbar')) {
           // tab bar found!
           tabBarNode = childNode;
-        }
-        else if (childNode.nodeName === 'ION-TAB') {
+        } else if (childNode.nodeName === 'ION-TAB') {
           index++;
           if (element === childNode) {
             // target tab found!
@@ -151,7 +149,7 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
   /**
    * Called on input parameter value changes.
    */
-  public ngOnChanges(changes: {[key: string]: SimpleChange}) {
+  public ngOnChanges(changes: { [key: string]: SimpleChange }) {
     if (this._iconElement) {
       if (changes.hasOwnProperty('iconName')) {
         super.updateIcon(this.iconName);

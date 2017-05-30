@@ -1,4 +1,3 @@
-import {ElementRef, Renderer} from '@angular/core';
 import {Config} from 'ionic-angular';
 import {ClassUpdater} from './util/ClassUpdater';
 
@@ -91,7 +90,7 @@ export abstract class CustomIconBase {
    */
   protected updateActive(active: boolean) {
     let classVal;
-    if (active) {
+    if (active || typeof active === 'undefined') {
       classVal = null;
     } else {
       classVal = 'inactive';
@@ -124,7 +123,7 @@ export abstract class CustomIconBase {
    */
   protected removeElementClasses() {
     this._classUpdaterPromise.then((classUpdater: ClassUpdater) => {
-      for (var key in this._classes) {
+      for (let key in this._classes) {
         if (this._classes[key]) {
           classUpdater.removeClass(this._classes[key]);
           this._classes[key] = null;

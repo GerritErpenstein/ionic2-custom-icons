@@ -1,13 +1,15 @@
 import {NgModule}      from '@angular/core';
 import {CommonModule}  from '@angular/common';
-import {CustomIcon} from './custom-icon.directive';
-import {ButtonCustomIcon} from './button-custom-icon.directive';
-import {TabCustomIcon} from './tab-custom-icon.directive';
+import {CustomIcon} from './icon/custom-icon.directive';
+import {ButtonCustomIcon} from './button/button-custom-icon.directive';
+import {TabCustomIcon} from './tabs/tab-custom-icon.directive';
+import {ActionSheetCustomIconController} from './action-sheet/action-sheet-custom-icon-controller';
 
 @NgModule({
-   imports: [CommonModule],
-   exports: [CustomIcon, ButtonCustomIcon, TabCustomIcon],
-   declarations: [CustomIcon, ButtonCustomIcon, TabCustomIcon]
+  imports: [CommonModule],
+  exports: [CustomIcon, ButtonCustomIcon, TabCustomIcon],
+  declarations: [CustomIcon, ButtonCustomIcon, TabCustomIcon],
+  providers: [ActionSheetCustomIconController]
 })
 export class CustomIconsModule {
 }

@@ -1,8 +1,8 @@
 import {Directive, ElementRef, Renderer, Input, OnChanges, SimpleChange, OnDestroy} from '@angular/core';
 import {Config} from 'ionic-angular';
-import {CustomIconBase} from './custom-icon-base'
-import {ElementRefClassUpdater} from './util/ElementRefClassUpdater';
-import {isTrueValue} from './util/utils';
+import {CustomIconBase} from '../custom-icon-base';
+import {ElementRefClassUpdater} from '../util/ElementRefClassUpdater';
+import {isTrueValue} from '../util/utils';
 
 /**
  * Directive to display custom icons from generated icon font.
@@ -58,7 +58,7 @@ export class CustomIcon extends CustomIconBase implements OnChanges, OnDestroy {
   /**
    * Called on input parameter value changes.
    */
-  public ngOnChanges(changes: {[key: string]: SimpleChange}) {
+  public ngOnChanges(changes: { [key: string]: SimpleChange }) {
     if (changes.hasOwnProperty('iconName')) {
       super.updateIcon(this.iconName);
     }

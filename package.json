@@ -1,6 +1,6 @@
 {
   "name": "ionic2-custom-icons",
-  "version": "0.4.1",
+  "version": "0.5.0-beta.1",
   "description": "A npm-script for creating custom icon fonts and Angular 4 directives to render the icons in your Ionic 3 app.",
   "author": {
     "email": "gerrit.erpenstein.dev@gmail.com",
@@ -19,8 +19,11 @@
   },
   "main": "directive/dist/index.js",
   "scripts": {
-    "clean": "rm -rf ionic/dist npm-script/dist",
+    "clean": "rm -rf ionic/dist npm-script/dist && npm run clean-generated",
+    "clean-generated": "rm -rf ionic/src/*.ngfactory.ts && rm -rf ionic/src/**/*.ngfactory.ts && rm -rf ionic/src/*.ngsummary.json && rm -rf ionic/src/**/*.ngsummary.json",
+    "clean-node-modules": "rm -r node_modules ionic/node_modules",
     "prebuild": "npm run clean && mkdir ionic/dist && mkdir npm-script/dist",
+    "tslint": "tslint './ionic/src/**/*.ts'",
     "directive:build": "ngc -p ionic/tsconfig.json",
     "npm-script:build": "tsc -p npm-script",
     "build": "npm run directive:build && npm run npm-script:build",
@@ -53,6 +56,8 @@
     "ionic-angular": "3.0.1",
     "markdown-toc": "^1.1.0",
     "rxjs": "5.1.1",
+    "tslint": "3.15.1",
+    "tslint-ionic-rules": "0.0.7",
     "typescript": "~2.2.1",
     "zone.js": "^0.8.4"
   },
