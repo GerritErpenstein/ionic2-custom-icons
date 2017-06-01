@@ -12,7 +12,7 @@ export class ActionSheetButtonCustomIcon extends CustomIconBase {
 
   private _iconElement: HTMLElement;
 
-  constructor(private _options: ActionSheetButtonCustomIconOptions, private _parentButtonElement: HTMLElement, config: Config) {
+  constructor(private _options: ActionSheetButtonCustomIconOptions, private _buttonElement: HTMLElement, config: Config) {
     super(config);
   }
 
@@ -26,8 +26,10 @@ export class ActionSheetButtonCustomIcon extends CustomIconBase {
     classUpdater.addClass('action-sheet-icon');
     this._updateOptions();
 
-    const buttonInnerElement = this._parentButtonElement.querySelector('.button-inner');
+    const buttonInnerElement = this._buttonElement.querySelector('.button-inner');
     buttonInnerElement.insertBefore(this._iconElement, buttonInnerElement.firstChild);
+
+    this._buttonElement.setAttribute('icon-left','');
   }
 
   private _updateOptions(options?: ActionSheetButtonCustomIconOptions) {
@@ -47,8 +49,9 @@ export class ActionSheetButtonCustomIcon extends CustomIconBase {
       console.warn('Unable to destroy icon (has not been rendered)');
       return;
     }
-    this._parentButtonElement.removeChild(this._iconElement);
+    this._buttonElement.removeChild(this._iconElement);
     this._iconElement = undefined;
+    this._buttonElement.removeAttribute('icon-left')
   }
 
 }
