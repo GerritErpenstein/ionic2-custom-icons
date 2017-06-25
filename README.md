@@ -9,11 +9,14 @@ The library has been tested with Ionic 3.0.1 and @ionic/app-scripts 1.3.4.
 
 Please note that Ionic is under heavy development. This library will be updated promptly if there are any modifications/updates necessary. 
 
-Warning: ionic-cli 3.x incompatible
+Warning: ionic-cli 3.x incompatible \*UPDATE\*
 -----------------------------------
 
-The current release of `ionic-cli` (version `3.x`) is not compatible with this library as it does not support any `npm` build hooks yet. Please wait with upgrading `ionic-cli` until the following issue is resolved: https://github.com/driftyco/ionic-cli/issues/1989
-You can install ionic-cli 2.x with the following command:
+\***UPDATE\*:** The latest alpha release of `ionic-cli` adds support for `npm` hooks! :raised_hands:
+Please see the corresponding issue for more info: [npm scripts not triggered for ionic-cli 3.x](https://github.com/GerritErpenstein/ionic2-custom-icons/issues/18). Detailed instructions will be published when the feature finds its way into a stable release of `ionic-cli`.
+
+If you don't want to install an alpha release, please stick to `ionic-cli 2.x` for now.
+You can install `ionic-cli 2.x` with the following command:
 ```
 npm install -g ionic@^2.0
 ```

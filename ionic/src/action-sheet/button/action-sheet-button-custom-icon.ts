@@ -49,7 +49,7 @@ export class ActionSheetButtonCustomIcon extends CustomIconBase {
       console.warn('Unable to destroy icon (has not been rendered)');
       return;
     }
-    this._buttonElement.removeChild(this._iconElement);
+    this._iconElement.parentElement.removeChild(this._iconElement);
     this._iconElement = undefined;
     this._buttonElement.removeAttribute('icon-left')
   }
