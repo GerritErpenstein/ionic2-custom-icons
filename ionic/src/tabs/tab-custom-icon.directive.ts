@@ -1,5 +1,5 @@
-import {Directive, Input, Host, ElementRef, AfterContentInit, OnDestroy, OnChanges, SimpleChange} from '@angular/core';
-import {Tab, Tabs, Config} from 'ionic-angular';
+import {AfterContentInit, Directive, ElementRef, Host, Input, OnChanges, OnDestroy, SimpleChange} from '@angular/core';
+import {Config, Tab, Tabs} from 'ionic-angular';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';

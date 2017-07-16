@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Renderer, Input, OnChanges, SimpleChange, OnDestroy} from '@angular/core';
+import {Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer, SimpleChange} from '@angular/core';
 import {Config} from 'ionic-angular';
 import {CustomIconBase} from '../custom-icon-base';
 import {ElementRefClassUpdater} from '../util/ElementRefClassUpdater';

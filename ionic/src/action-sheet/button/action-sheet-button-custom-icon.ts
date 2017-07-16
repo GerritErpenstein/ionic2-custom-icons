@@ -29,7 +29,7 @@ export class ActionSheetButtonCustomIcon extends CustomIconBase {
     const buttonInnerElement = this._buttonElement.querySelector('.button-inner');
     buttonInnerElement.insertBefore(this._iconElement, buttonInnerElement.firstChild);
 
-    this._buttonElement.setAttribute('icon-left','');
+    this._buttonElement.setAttribute('icon-left', '');
   }
 
   private _updateOptions(options?: ActionSheetButtonCustomIconOptions) {
@@ -51,7 +51,7 @@ export class ActionSheetButtonCustomIcon extends CustomIconBase {
     }
     this._iconElement.parentElement.removeChild(this._iconElement);
     this._iconElement = undefined;
-    this._buttonElement.removeAttribute('icon-left')
+    this._buttonElement.removeAttribute('icon-left');
   }
 
 }

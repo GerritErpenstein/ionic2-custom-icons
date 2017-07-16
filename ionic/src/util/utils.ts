@@ -3,4 +3,4 @@
  */
 export function isTrueValue(val: any): boolean {
   return typeof val === 'string' ? val.toLowerCase().trim() === 'true' : !!val;
-};
+}

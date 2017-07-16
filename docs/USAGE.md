@@ -6,9 +6,11 @@ Using the *Angular 2* directive in your *Ionic 2* app to render custom icons is 
 
 <!-- toc -->
 
-- [Importing](#importing)
+- [Icon file naming](#icon-file-naming)
+- [Importing the module](#importing-the-module)
 - [Using the directive in templates](#using-the-directive-in-templates)
   * [Tabs](#tabs)
+  * [Action Sheets](#action-sheets)
 
 <!-- tocstop -->
 
@@ -107,3 +109,61 @@ See the following example:
 ```
 
 Refer to the above table for the data-bound input property description. `customIconSet` is analogous to `set` and `customIconName` to `name`. 
+
+##### Action Sheets
+
+Support for adding custom icons to *Ionic*'s [Action Sheet](https://ionicframework.com/docs/components/#action-sheets) dialog was introduced in Version 0.5.0.
+Please make sure you understand the basics concepts of using *Ionic's* [ActionSheetController](https://ionicframework.com/docs/api/components/action-sheet/ActionSheetController/) as this library builds on top of it.
+
+If you want to use custom icons in your action sheet dialog, use/inject `ActionSheetCustomIconController` instead of *Ionic*'s `ActionSheetController`.
+This class is a drop-in replacement for *Ionic*'s implementation which additionally allows setting the `customIcon` option for an element in the `buttons` array property.
+The ActionSheet button options now support the following properties:
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `text` | `string` | The button's text. * |
+| `icon` | `string` | The button's default *Ionic* icon. * **Note**: Don't set this property if you want to use a custom icon. |
+| `customIcon` | `ActionSheetButtonCustomIconOptions` | The button's custom icon. Supply an object consisting of the following properties: `name` (`string`), `set` (`string`), `active` (`boolean`, optional) |
+| `role` | `string` | How the button should be displayed, destructive or cancel. If not role is provided, it will display the button without any additional styles. * |
+| `cssClass` | `string` | Additional classes for custom styles, separated by spaces. * |
+| `handler` | `function` | A function that is called when the user has clicked the action sheet button. |
+
+<sub>* copied from *Ionic* docs</sub>
+
+This is an example of creating an action sheet with custom icon buttons:
+```javascript
+...
+import {ActionSheetCustomIconController} from 'ionic2-custom-icons';
+...
+
+// Create action sheet
+let actionSheet = this.actionsheetCtrl.create({
+  title: 'My action sheet',
+  buttons: [
+    // Custom icon button
+    {
+      text: 'Circle',
+      customIcon: {
+        set: 'myIconSet',
+        name: 'myIcon',
+      },
+      handler: () => {
+        console.log('My custom icon clicked');
+      }
+    },
+    // Default icon button
+    {
+      text: 'Linux',
+      icon: 'tux',
+      handler: () => {
+        console.log('Tux from ionic's default icon set clicked');
+      }
+    }
+  ]
+});
+// Show action sheet
+actionSheet.present();
+
+```
+
+See the files [action-sheet.page.ts](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/src/pages/action-sheet/action-sheet.page.ts) and [action-sheet.page.html](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/src/pages/action-sheet/action-sheet.page.html) in the example app for a complete and working example.

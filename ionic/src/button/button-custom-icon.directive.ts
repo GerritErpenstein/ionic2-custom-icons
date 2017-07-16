@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Renderer, AfterContentInit, AfterContentChecked} from '@angular/core';
+import {AfterContentChecked, AfterContentInit, Directive, ElementRef, Renderer} from '@angular/core';
 
 
 /**
