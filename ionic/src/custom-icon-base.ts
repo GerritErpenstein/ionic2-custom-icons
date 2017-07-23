@@ -5,6 +5,7 @@ interface CustomIconClasses {
   set: string;
   icon: string;
   mode: string;
+  color: string;
   active: string;
 }
 
@@ -26,12 +27,18 @@ export abstract class CustomIconBase {
   private static readonly ICON_PREFIX = 'icon-';
 
   /**
+   * Platform mode (md, ios or wp)
+   */
+  private _mode: string;
+
+  /**
    * Stores currently set classes
    */
   private _classes: CustomIconClasses = {
     set: null,
     icon: null,
     mode: null,
+    color: null,
     active: null
   };
 
@@ -45,7 +52,8 @@ export abstract class CustomIconBase {
     this._classUpdaterPromise = new Promise(resolve => {
       this._classUpdaterResolve = resolve;
     });
-    this.updateMode(config.get('mode'));
+    this._mode = config.get('mode');
+    this.updateMode(this._mode);
   }
 
   /**
@@ -82,6 +90,18 @@ export abstract class CustomIconBase {
       throw 'CustomIcon: Mode ' + mode + ' not supported';
     }
     this._updateClass('mode', mode);
+  }
+
+  /**
+   * Update icon color.
+   * @param color
+   */
+  protected updateColor(color: string) {
+    let classVal;
+    if (color) {
+      classVal = `icon-${this._mode}-${color}`;
+    }
+    this._updateClass('color', classVal);
   }
 
   /**

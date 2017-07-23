@@ -1,3 +1,6 @@
+# [0.5.1](https://github.com/GerritErpenstein/ionic2-custom-icons/compare/0.5.0...0.5.1) (2017-07-23)
+- Fixed custom icon colors
+
 # [0.5.0](https://github.com/GerritErpenstein/ionic2-custom-icons/compare/0.4.1...0.5.0) (2017-07-16)
 - Support for custom icons in actions sheets ([#19](https://github.com/GerritErpenstein/ionic2-custom-icons/issues/19))
 - `ionic-cli 3.x` is supported now ([#18](https://github.com/GerritErpenstein/ionic2-custom-icons/issues/18)). See the respective [docs](https://github.com/GerritErpenstein/ionic2-custom-icons/blob/master/docs/CONFIGURATION.md#11-add-npm-scripts) for instructions to update your `package.json` file.

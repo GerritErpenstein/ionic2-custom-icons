@@ -81,6 +81,7 @@ The directive has three data-bound input properties:
 | --- | --- | --- | --- |
 | `set` | `string` |  **yes** | The desired icon's set name as defined in the *gulp* taks's `id` option. |
 | `name` | `string` |  **yes** | File name of the icon without it's file extension.<br>Example: `MyIcon.svg` becomes `MyIcon`. |
+| `color` | `string` |  **no** | The icon's color. For more info see the Ionic docs: [Theming your App](https://ionicframework.com/docs/theming/theming-your-app/). |
 | `isActive` | `boolean` |  **no** | Sets the icon's state to active/inactive. The default value is `true`. |
 
 Special use cases, like adding an icon to an *Ionic* Button, are also supported:

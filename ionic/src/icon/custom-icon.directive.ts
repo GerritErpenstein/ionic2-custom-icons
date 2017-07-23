@@ -33,7 +33,11 @@ export class CustomIcon extends CustomIconBase implements OnChanges, OnDestroy {
    */
   @Input('set')
   public iconSet: string = '';
-
+  /**
+   * Icon color
+   */
+  @Input('color')
+  public color: string = '';
   /**
    * Icon in active state?
    */
@@ -64,6 +68,9 @@ export class CustomIcon extends CustomIconBase implements OnChanges, OnDestroy {
     }
     if (changes.hasOwnProperty('iconSet')) {
       super.updateSet(this.iconSet);
+    }
+    if (changes.hasOwnProperty('color')) {
+      super.updateColor(this.color);
     }
     if (changes.hasOwnProperty('isActive')) {
       super.updateActive(this.isActive);
