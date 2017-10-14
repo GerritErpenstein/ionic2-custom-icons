@@ -8,6 +8,7 @@ Using the *Angular 2* directive in your *Ionic 2* app to render custom icons is 
 
 - [Icon file naming](#icon-file-naming)
 - [Importing the module](#importing-the-module)
+  * [Sub-modules](#sub-modules)
 - [Using the directive in templates](#using-the-directive-in-templates)
   * [Tabs](#tabs)
   * [Action Sheets](#action-sheets)
@@ -64,6 +65,12 @@ export class AppModule {}
 ```
 
 See the [app.module.ts](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/src/app/app.module.ts) of the example project for reference.
+
+##### Sub-modules
+
+Please be aware, that `CustomIconsModule` needs to be added to all of your sub-modules.
+
+If you have more than just one module or directive that should be available in multiple sub-modules, a shared module is a good approach: https://angular.io/guide/ngmodule#shared-modules
 
 #### Using the directive in templates
 Use the directive as follows to render a custom icon in your app:
