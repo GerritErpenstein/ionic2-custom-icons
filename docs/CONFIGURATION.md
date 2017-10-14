@@ -31,7 +31,6 @@ Add the `ionic2-custom-icons` script and bind it to `ionic:watch:before` and `io
 ```
 ...
 "scripts": {
-  "ionic2-custom-icons": "ionic2-custom-icons",
   "ionic:watch:before": "ionic2-custom-icons",
   "ionic:build:before": "ionic2-custom-icons",
   ...
@@ -46,7 +45,6 @@ In case you use an older version of `ionic-cli` (`2.x`) set the scripts as follo
 ```
 ...
 "scripts": {
-  "ionic2-custom-icons": "ionic2-custom-icons",
   "build:before": "ionic2-custom-icons",
   "serve:before": "ionic2-custom-icons",
   ...
