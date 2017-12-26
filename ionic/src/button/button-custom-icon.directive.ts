@@ -63,7 +63,7 @@ export class ButtonCustomIcon implements AfterContentInit, AfterContentChecked {
 
       if (childNode.nodeType === 3) {
         // text node
-        if (childNode.textContent.trim() !== '') {
+        if (childNode.textContent!.trim() !== '') {
           nodes.push(TEXT);
         }
       } else if (childNode.nodeType === 1) {

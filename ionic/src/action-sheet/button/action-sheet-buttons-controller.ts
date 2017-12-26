@@ -1,6 +1,9 @@
 import {ElementRef} from '@angular/core/core';
 import {ActionSheet, Config} from 'ionic-angular';
-import {ActionSheetCustomIconButtonOptions} from '../action-sheet-custom-icon-options';
+import {
+  ActionSheetButtonCustomIconOptions,
+  ActionSheetCustomIconButtonOptions
+} from '../action-sheet-custom-icon-options';
 import {ActionSheetButtonCustomIcon} from './action-sheet-button-custom-icon';
 
 /**
@@ -14,7 +17,7 @@ export class ActionSheetButtonsController {
   private _icons: Array<ActionSheetButtonCustomIcon> = [];
 
   constructor(private _actionSheet: ActionSheet,
-              private _buttonOptions: Array<ActionSheetCustomIconButtonOptions>,
+              private _buttonOptions: Array<ActionSheetCustomIconButtonOptions> = [],
               private _config: Config) {
   }
 
@@ -37,7 +40,8 @@ export class ActionSheetButtonsController {
     // Set custom icon for each button
     for (let i = 0; i < buttons.length; i++) {
       if (this._buttonOptions[i].hasOwnProperty('customIcon')) {
-        const customIcon = new ActionSheetButtonCustomIcon(this._buttonOptions[i].customIcon, buttons[i], this._config);
+        const customIconOptions = this._buttonOptions[i].customIcon as ActionSheetButtonCustomIconOptions;
+        const customIcon = new ActionSheetButtonCustomIcon(customIconOptions, buttons[i], this._config);
         customIcon.render();
         this._icons.push(customIcon);
       }

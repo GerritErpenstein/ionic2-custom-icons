@@ -10,7 +10,7 @@ import {HTMLElementClassUpdater} from '../../util/HTMLElementClassUpdater';
  */
 export class ActionSheetButtonCustomIcon extends CustomIconBase {
 
-  private _iconElement: HTMLElement;
+  private _iconElement: HTMLElement | undefined;
 
   constructor(private _options: ActionSheetButtonCustomIconOptions, private _buttonElement: HTMLElement, config: Config) {
     super(config);
@@ -27,6 +27,9 @@ export class ActionSheetButtonCustomIcon extends CustomIconBase {
     this._updateOptions();
 
     const buttonInnerElement = this._buttonElement.querySelector('.button-inner');
+    if(!buttonInnerElement) {
+      throw 'ActionSheetButtonCustomIcon: Expected element with class .button-inner does not exist.';
+    }
     buttonInnerElement.insertBefore(this._iconElement, buttonInnerElement.firstChild);
 
     this._buttonElement.setAttribute('icon-left', '');
@@ -38,7 +41,9 @@ export class ActionSheetButtonCustomIcon extends CustomIconBase {
     }
     super.updateSet(this._options.set);
     super.updateIcon(this._options.name);
-    super.updateActive(this._options.active);
+    if(this._options.active !== undefined) {
+      super.updateActive(this._options.active);
+    }
   }
 
   /**
@@ -49,7 +54,7 @@ export class ActionSheetButtonCustomIcon extends CustomIconBase {
       console.warn('Unable to destroy icon (has not been rendered)');
       return;
     }
-    this._iconElement.parentElement.removeChild(this._iconElement);
+    this._iconElement.parentElement!.removeChild(this._iconElement);
     this._iconElement = undefined;
     this._buttonElement.removeAttribute('icon-left');
   }

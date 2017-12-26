@@ -1,9 +1,7 @@
 import {AfterContentInit, Directive, ElementRef, Host, Input, OnChanges, OnDestroy, SimpleChange} from '@angular/core';
 import {Config, Tab, Tabs} from 'ionic-angular';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
+import {fromPromise} from 'rxjs/observable/fromPromise';
+import {map, flatMap} from 'rxjs/operators';
 import {CustomIconBase} from '../custom-icon-base';
 import {HTMLElementClassUpdater} from '../util/HTMLElementClassUpdater';
 
@@ -49,13 +47,13 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
               config: Config) {
     super(config);
     // Observable from Promise that resolves when the icon is added to the DOM
-    const iconAdded$ = Observable.fromPromise(new Promise(resolve => this._iconAddedResolve = resolve));
+    const iconAdded$ = fromPromise(new Promise(resolve => this._iconAddedResolve = resolve));
     // Subscribe to tab change events and call _onTabSelected on change.
-    this._tabs.ionChange.asObservable()
-      .flatMap((selectedTab: Tab) => iconAdded$.map(() => selectedTab))
-      .subscribe((selectedTab: Tab) => {
-        this._onTabSelected(selectedTab);
-      });
+    this._tabs.ionChange.asObservable().pipe(
+      flatMap((selectedTab: Tab) => iconAdded$.pipe(map(() => selectedTab)))
+    ).subscribe((selectedTab: Tab) => {
+      this._onTabSelected(selectedTab);
+    });
   }
 
   /**
@@ -77,8 +75,8 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
       index: number = -1,
       childNodes = tabsElement.childNodes,
       childNode: Node,
-      tabBarNode: Node,
-      tabNode: Node;
+      tabBarNode: Node | undefined = undefined,
+      tabNode: Node | undefined = undefined;
 
     // Find tab bar node and index of tab item
     for (let i = 0, l = childNodes.length; i < l; i++) {
@@ -96,45 +94,45 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
         }
       }
     }
+
     if (index === -1) {
       throw 'TabCustomIcon: Error finding tab index.';
     }
-
-    // Find tab node in tab bar
-    if (tabBarNode) {
-      childNodes = tabBarNode.childNodes;
-      let tabBarIndex: number = -1;
-      for (let i = 0, l = childNodes.length; i < l; i++) {
-        childNode = childNodes[i];
-        if (childNode.nodeType === 1 && childNode.nodeName === 'A') {
-          tabBarIndex++;
-          if (index === tabBarIndex) {
-            // found target tab node
-            tabNode = childNode;
-            break;
-          }
-        }
-      }
-    } else {
+    if(!tabBarNode) {
       throw 'TabCustomIcon: Error finding tab bar node "ion-tabbar"';
     }
 
-    // add icon to tab
-    if (tabNode) {
-      // remove class 'has-title-only' from tab, add class 'has-icon'
-      let tabCssClass = (<HTMLElement>tabNode).className;
-      tabCssClass = tabCssClass.replace(/(?:^|\s)has-title-only(?!\S)/, '');
-      if (!/has-title/.test(tabCssClass))
-        tabCssClass += ' icon-only';
-      tabCssClass += ' has-icon';
-      (<HTMLElement>tabNode).className = tabCssClass;
-      // create and add custom-icon element to tab
-      this._iconElement = document.createElement('custom-icon');
-      this.classUpdater = new HTMLElementClassUpdater(this._iconElement);
-      tabNode.insertBefore(this._iconElement, tabNode.firstChild);
-    } else {
+    // Find tab node in tab bar
+    childNodes = tabBarNode.childNodes;
+    let tabBarIndex: number = -1;
+    for (let i = 0, l = childNodes.length; i < l; i++) {
+      childNode = childNodes[i];
+      if (childNode.nodeType === 1 && childNode.nodeName === 'A') {
+        tabBarIndex++;
+        if (index === tabBarIndex) {
+          // found target tab node
+          tabNode = childNode;
+          break;
+        }
+      }
+    }
+
+    if(!tabNode) {
       throw 'TabCustomIcon: Target tab not found.';
     }
+
+    // add icon to tab
+    // remove class 'has-title-only' from tab, add class 'has-icon'
+    let tabCssClass = (<HTMLElement>tabNode).className;
+    tabCssClass = tabCssClass.replace(/(?:^|\s)has-title-only(?!\S)/, '');
+    if (!/has-title/.test(tabCssClass))
+      tabCssClass += ' icon-only';
+    tabCssClass += ' has-icon';
+    (<HTMLElement>tabNode).className = tabCssClass;
+    // create and add custom-icon element to tab
+    this._iconElement = document.createElement('custom-icon');
+    this.classUpdater = new HTMLElementClassUpdater(this._iconElement);
+    tabNode.insertBefore(this._iconElement, tabNode.firstChild);
 
     // add classes to custom icon element
     if (this.iconName && this.iconSet) {
@@ -181,7 +179,7 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
     if (this._iconElement) {
       this._iconElement.classList.remove('tab-button-icon');
       super.removeElementClasses();
-      let parentNode: Node = this._iconElement.parentNode;
+      let parentNode: Node = this._iconElement.parentNode!;
       if (parentNode) {
         parentNode.removeChild(this._iconElement);
       }

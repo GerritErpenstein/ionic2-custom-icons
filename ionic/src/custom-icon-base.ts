@@ -2,11 +2,12 @@ import {Config} from 'ionic-angular';
 import {ClassUpdater} from './util/ClassUpdater';
 
 interface CustomIconClasses {
-  set: string;
-  icon: string;
-  mode: string;
-  color: string;
-  active: string;
+  set: string | undefined;
+  icon: string | undefined;
+  mode: string | undefined;
+  color: string | undefined;
+  active: string | undefined;
+  [key: string]: string | undefined;
 }
 
 /**
@@ -35,11 +36,11 @@ export abstract class CustomIconBase {
    * Stores currently set classes
    */
   private _classes: CustomIconClasses = {
-    set: null,
-    icon: null,
-    mode: null,
-    color: null,
-    active: null
+    set: undefined,
+    icon: undefined,
+    mode: undefined,
+    color: undefined,
+    active: undefined,
   };
 
   /**
@@ -97,7 +98,7 @@ export abstract class CustomIconBase {
    * @param color
    */
   protected updateColor(color: string) {
-    let classVal;
+    let classVal = undefined;
     if (color) {
       classVal = `icon-${this._mode}-${color}`;
     }
@@ -110,8 +111,8 @@ export abstract class CustomIconBase {
    */
   protected updateActive(active: boolean) {
     let classVal;
-    if (active || typeof active === 'undefined') {
-      classVal = null;
+    if (active || active === undefined) {
+      classVal = undefined;
     } else {
       classVal = 'inactive';
     }
@@ -124,13 +125,13 @@ export abstract class CustomIconBase {
    * @param value
    * @private
    */
-  private _updateClass(key: string, value: string) {
+  private _updateClass(key: string, value: string | undefined) {
     this._classUpdaterPromise.then((classUpdater: ClassUpdater) => {
       if (this._classes[key]) {
-        classUpdater.removeClass(this._classes[key]);
+        classUpdater.removeClass(<string>this._classes[key]);
       }
       if (!value) {
-        this._classes[key] = null;
+        this._classes[key] = undefined;
         return;
       }
       this._classes[key] = value;
@@ -145,8 +146,8 @@ export abstract class CustomIconBase {
     this._classUpdaterPromise.then((classUpdater: ClassUpdater) => {
       for (let key in this._classes) {
         if (this._classes[key]) {
-          classUpdater.removeClass(this._classes[key]);
-          this._classes[key] = null;
+          classUpdater.removeClass(<string>this._classes[key]);
+          this._classes[key] = undefined;
         }
       }
     });
