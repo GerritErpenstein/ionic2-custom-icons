@@ -4,6 +4,7 @@ export interface DefaultConfig {
    fontRelPath?: string;
    scssTargetPath?: string;
    scssRelPath?: string;
+   debug?: boolean;
 }
 
 export interface Config extends DefaultConfig {

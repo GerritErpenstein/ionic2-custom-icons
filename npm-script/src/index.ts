@@ -2,13 +2,12 @@ import {join} from 'path';
 import {appendFile as fsAppendFile} from 'fs';
 import {copy as fsCopy, emptyDirSync} from 'fs-extra';
 import * as _ from 'lodash';
-import {Config, IconSetConfig} from './config';
-import {containsWhitespace} from './util';
+import {Config} from './config';
+import {containsWhitespace, logInfo, logError, logWarn} from './util';
 import {defaultConfig} from './default-config';
 import {gulpCustomIcons} from './gulp-custom-icons';
 
-const gulp: any = require('gulp'),
-  gutil: any = require('gulp-util');
+const gulp: any = require('gulp');
 
 const taskName = 'customIcons',
   envConfig = 'custom_icons',
@@ -25,10 +24,10 @@ export function run() {
   createIcons(config)
     .then(() => createSassVarsFile(config))
     .then(() => {
-      console.log(`ionic2-custom-icons: Successfully created icons`);
+      logInfo(`ionic2-custom-icons: Successfully created icons`);
     })
     .catch((err) => {
-      console.error(`ionic2-custom-icons: Error creating custom icons: ${err}`);
+      logError(`ionic2-custom-icons: Error creating custom icons: ${err}`);
       // Allow Node to exit gracefully
       process.exitCode = 1;
     });
@@ -91,7 +90,7 @@ function validateConfig(config: Config) {
     if (containsWhitespace(set.id))
       throw new Error('Property \'id\' contains whitespace.');
     if (set.name)
-      console.warn('ionic2-custom-icons: Property \'name\' in config is obsolete and safe to remove.');
+      logWarn('ionic2-custom-icons: Property \'name\' in config is obsolete and safe to remove.');
   }
 }
 

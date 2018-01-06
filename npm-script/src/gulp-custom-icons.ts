@@ -1,9 +1,7 @@
-import * as _ from 'lodash';
-import {join} from 'path';
 import {Config} from './config';
+import {logInfo} from './util';
 
 const gulp = require('gulp'),
-  gutil = require('gulp-util'),
   iconfont = require('gulp-iconfont'),
   template = require('gulp-template'),
   rename = require('gulp-rename'),
@@ -17,7 +15,7 @@ export function gulpCustomIcons(config: Config) {
   // One gulp stream for each icon set
   const streams: Array<any> = [];
   for (let iconSet of config.iconSets) {
-    gutil.log(PLUGIN_NAME + ': Creating custom icon set \'' + iconSet.id + '\'');
+    logInfo(PLUGIN_NAME + ': Creating custom icon set \'' + iconSet.id + '\'');
     const fontName = FONT_NAME_PREFIX + iconSet.id;
     // run gulp tasks: iconfont, iconfontCSS
     let stream = gulp.src([iconSet.src])
@@ -26,7 +24,8 @@ export function gulpCustomIcons(config: Config) {
         formats: ['ttf', 'eot', 'woff', 'woff2', 'svg'],
         normalize: true,
         centerHorizontally: true,
-        fontHeight: 1000
+        fontHeight: 1000,
+        log: config.debug ? logInfo : () => {}
       }))
       .on('glyphs', function (glyphs: any[], options: any) {
         let setClass = iconSet.id;

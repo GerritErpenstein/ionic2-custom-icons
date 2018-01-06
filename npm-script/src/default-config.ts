@@ -6,5 +6,6 @@ export const defaultConfig: DefaultConfig = {
    fontTargetPath: '.tmp-custom-icons/fonts',
    fontRelPath: '../assets/fonts/',
    scssTargetPath: '.tmp-custom-icons/scss/',
-   scssRelPath: '../scss/${name}.scss'
+   scssRelPath: '../scss/${name}.scss',
+   debug: false
 };
