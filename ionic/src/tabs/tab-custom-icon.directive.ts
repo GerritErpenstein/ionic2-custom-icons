@@ -1,7 +1,7 @@
 import {AfterContentInit, Directive, ElementRef, Host, Input, OnChanges, OnDestroy, SimpleChange} from '@angular/core';
 import {Config, Tab, Tabs} from 'ionic-angular';
 import {fromPromise} from 'rxjs/observable/fromPromise';
-import {map, flatMap} from 'rxjs/operators';
+import {flatMap, map} from 'rxjs/operators';
 import {CustomIconBase} from '../custom-icon-base';
 import {HTMLElementClassUpdater} from '../util/HTMLElementClassUpdater';
 
@@ -32,6 +32,16 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
    */
   @Input('customIconName')
   public iconName: string = '';
+  /**
+   * Active tab icon color
+   */
+  @Input('customIconColorActive')
+  public iconColorActive: string = '';
+  /**
+   * Inactive tab icon color
+   */
+  @Input('customIconColorInactive')
+  public iconColorInactive: string = '';
   /**
    * Icon element in DOM
    */
@@ -98,7 +108,7 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
     if (index === -1) {
       throw 'TabCustomIcon: Error finding tab index.';
     }
-    if(!tabBarNode) {
+    if (!tabBarNode) {
       throw 'TabCustomIcon: Error finding tab bar node "ion-tabbar"';
     }
 
@@ -117,7 +127,7 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
       }
     }
 
-    if(!tabNode) {
+    if (!tabNode) {
       throw 'TabCustomIcon: Target tab not found.';
     }
 
@@ -164,10 +174,22 @@ export class TabCustomIcon extends CustomIconBase implements AfterContentInit, O
    * @private
    */
   private _onTabSelected(selectedTab: Tab) {
-    if (selectedTab === this._tab) {
-      super.updateActive(true);
+    const active: boolean = (selectedTab === this._tab) ? true : false;
+    super.updateActive(active);
+    this.updateTabColor(active);
+  }
+
+  /**
+   * Update the tab's icon color.
+   * @param {boolean} active
+   */
+  private updateTabColor(active: boolean) {
+    if (active && this.iconColorActive) {
+      this._iconElement.style.color = this.iconColorActive;
+    } else if (!active && this.iconColorInactive) {
+      this._iconElement.style.color = this.iconColorInactive;
     } else {
-      super.updateActive(false);
+      this._iconElement.style.color = '';
     }
   }
 

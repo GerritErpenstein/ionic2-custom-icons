@@ -2,7 +2,7 @@ Usage
 ============
 
 
-Using the *Angular 2* directive in your *Ionic 2* app to render custom icons is pretty easy. After adding the icons (following a simple naming syntax) you can use it in your app.
+Using the *Angular* directive in your *Ionic* app to render custom icons is pretty easy. After adding the icons (following a simple naming syntax) you can use it in your app.
 
 <!-- toc -->
 
@@ -117,6 +117,15 @@ See the following example:
 ```
 
 Refer to the above table for the data-bound input property description. `customIconSet` is analogous to `set` and `customIconName` to `name`. 
+
+Since version 0.5.2-beta.3 you can also set the tab icon's color by using the following two properties:
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `customIconColorActive` | `string` | CSS color of the icon when the corresponding tab is **selected** * |
+| `customIconColorInactive` | `string` | CSS color of the icon when the corresponding tab is **not selected** * |
+
+\* Only CSS colors are supported. For example the `#`-hexadecimal or `rgb()` notation. This means you can't use colors from *Ionic's* `$colors` map like `primary`, `secondary`, etc.
 
 ##### Action Sheets
 

@@ -1,6 +1,6 @@
 {
   "name": "ionic2-custom-icons",
-  "version": "0.5.2-beta.2",
+  "version": "0.5.2-beta.3",
   "description": "A npm-script for creating custom icon fonts and Angular 4 directives to render the icons in your Ionic 3 app.",
   "author": {
     "email": "gerrit.erpenstein.dev@gmail.com",
