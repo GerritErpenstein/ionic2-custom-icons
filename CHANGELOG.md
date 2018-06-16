@@ -1,3 +1,8 @@
+# [0.6.0](https://github.com/GerritErpenstein/ionic2-custom-icons/compare/0.5.1...0.6.0) (2018-06-16)
+- Improved log output formatting ([#32](https://github.com/GerritErpenstein/ionic2-custom-icons/issues/32))
+- Tab icon colors ([See tabs usage in docs](docs/USAGE.md#tabs)) ([#15](https://github.com/GerritErpenstein/ionic2-custom-icons/issues/15))
+- Updated dependencies
+
 # [0.5.1](https://github.com/GerritErpenstein/ionic2-custom-icons/compare/0.5.0...0.5.1) (2017-07-23)
 - Fixed custom icon colors
 
