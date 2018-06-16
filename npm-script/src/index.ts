@@ -1,13 +1,12 @@
 import {join} from 'path';
 import {appendFile as fsAppendFile} from 'fs';
 import {copy as fsCopy, emptyDirSync} from 'fs-extra';
-import * as _ from 'lodash';
+import {merge as _merge } from 'lodash';
+import * as gulp from 'gulp';
 import {Config} from './config';
-import {containsWhitespace, logInfo, logError, logWarn} from './util';
+import {containsWhitespace, logError, logInfo, logWarn} from './util';
 import {defaultConfig} from './default-config';
 import {gulpCustomIcons} from './gulp-custom-icons';
-
-const gulp: any = require('gulp');
 
 const taskName = 'customIcons',
   envConfig = 'custom_icons',
@@ -15,7 +14,7 @@ const taskName = 'customIcons',
 
 // Main function called by the npm script
 export function run() {
-  const config: Config = _.merge(defaultConfig, getConfigFileData());
+  const config: Config = _merge(defaultConfig, getConfigFileData());
 
   validateConfig(config);
 
@@ -41,9 +40,15 @@ function getConfigFileData() {
 
 function createIcons(config: Config): Promise<any> {
   return new Promise((resolve, reject) => {
-    const task = gulp.task(taskName, () => gulpCustomIcons(config));
-    gulp.start([taskName])
-      .once('task_stop', resolve);
+    gulp.task(taskName, () => gulpCustomIcons(config));
+    gulp.series(taskName)((err: any) => {
+      if (err) {
+        logError(`ionic2-custom-icons: Error creating custom icons: ${err}`);
+        reject();
+      } else {
+        resolve();
+      }
+    });
   });
 }
 
@@ -52,7 +57,7 @@ function createSassVarsFile(config: Config): Promise<any> {
     dest = join(cwd, config.scssTargetPath, 'variables.scss');
   return new Promise((resolve, reject) => {
     // Copy (nearly) empty variables.scss
-    fsCopy(src, dest, (err:any) => {
+    fsCopy(src, dest, (err: any) => {
       if (err) {
         const msg = `Error copying "${src}" to "${dest}": ${err}`;
         reject(msg);
@@ -64,7 +69,7 @@ function createSassVarsFile(config: Config): Promise<any> {
         scssImports += '\n@import "' + 'custom-icons-' + iconSet.id + '";';
       }
       // Write import statements to target variables.scss
-      fsAppendFile(dest, scssImports, (err:any) => {
+      fsAppendFile(dest, scssImports, (err: any) => {
         if (err) {
           const msg = `Error adding imports to "${dest}": ${err}`;
           reject(msg);
