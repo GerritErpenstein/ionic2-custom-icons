@@ -4,7 +4,7 @@ ionic2-custom-icons
 A *npm-script* for creating custom icon fonts and *Angular 5* directives to render the icons in your *Ionic 3* app.
 
 ```
-The library has been tested with Ionic 3.9.2, @ionic/app-scripts 3.1.0 and ionic-cli 3.19.1.
+The library has been tested with Ionic 3.9.2, @ionic/app-scripts 3.1.10 and ionic-cli 3.20.0.
 ```
 
 Please note that Ionic is under heavy development. This library will be updated promptly if there are any modifications/updates necessary. 
