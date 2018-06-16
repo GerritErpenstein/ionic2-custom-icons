@@ -58,6 +58,11 @@ The script automatically gets called BEFORE *Ionic's* build (`ionic build`) and 
 
 See the [package.json](https://github.com/GerritErpenstein/ionic2-custom-icons-example/blob/master/package.json) file of the example project for reference.
 
+**Windows users:** If you encounter the following error message, please see the issue [#31](https://github.com/GerritErpenstein/ionic2-custom-icons/issues/31) containing a workaround.
+```
+'ionic2-custom-icons' is not recognized as an internal or external command
+``` 
+
 ##### 1.2 Set paths to config files
 
 As already mentioned, the generated fonts and the SCSS data need to be processed and bundled in the main build phase of *Ionic's* build tools. For this to work you have to modify the paths processed by the `copy` and `sass` task which is achieved by extending *Ionic's* default configuration.
